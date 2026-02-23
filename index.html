@@ -450,108 +450,24 @@ body {
 }
 
 /* ===== ASSISTANT PAGE ===== */
-.assistant-page { display: flex; flex-direction: column; height: calc(100vh - 76px - 60px); }
-.chat-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.msg {
-  max-width: 85%;
-  padding: 12px 16px;
-  border-radius: 18px;
-  font-size: 0.88rem;
-  line-height: 1.6;
-  animation: msgIn .3s ease;
-}
-@keyframes msgIn { from { opacity:0; transform: translateY(8px); } }
-.msg.user {
-  align-self: flex-end;
-  background: var(--primary);
-  color: white;
-  border-bottom-right-radius: 4px;
-}
-.msg.assistant {
-  align-self: flex-start;
-  background: var(--surface);
-  color: var(--text);
-  border-bottom-left-radius: 4px;
-  box-shadow: var(--shadow);
-}
-.msg.assistant a { color: var(--primary); cursor: pointer; font-weight: 700; text-decoration: underline; }
-.msg-suggestions {
-  align-self: flex-start;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  max-width: 90%;
-}
-.suggestion-btn {
-  background: var(--surface);
-  border: 2px solid var(--primary);
-  color: var(--primary);
-  padding: 6px 12px;
-  border-radius: 16px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: var(--transition);
-}
-.suggestion-btn:hover { background: var(--primary); color: white; }
-.typing { align-self: flex-start; }
-.typing-dot {
-  display: inline-block;
-  width: 7px; height: 7px;
-  background: var(--text2);
-  border-radius: 50%;
-  animation: bounce .9s infinite;
-}
-.typing-dot:nth-child(2) { animation-delay: .2s; }
-.typing-dot:nth-child(3) { animation-delay: .4s; }
-@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
-
-.chat-input-area {
-  padding: 12px;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  display: flex;
-  gap: 10px;
-  align-items: flex-end;
-}
-.chat-input {
-  flex: 1;
-  border: 2px solid var(--border);
-  border-radius: 20px;
-  padding: 10px 16px;
-  font-family: 'Nunito', sans-serif;
-  font-size: 0.9rem;
-  resize: none;
-  max-height: 100px;
-  outline: none;
-  background: var(--bg);
-  color: var(--text);
-  transition: var(--transition);
-}
-.chat-input:focus { border-color: var(--primary); }
-.chat-send {
-  background: var(--primary);
-  border: none;
-  color: white;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: var(--transition);
-  flex-shrink: 0;
-}
+.assistant-page { display: flex; flex-direction: column; height: calc(100vh - 120px); }
+.chat-area { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.msg { max-width: 85%; padding: 12px 16px; border-radius: 18px; line-height: 1.5; font-size: 0.9rem; animation: fadeIn .3s ease; }
+.msg.user { background: var(--primary); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.msg.assistant { background: var(--surface); color: var(--text); align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: var(--shadow); }
+.msg.typing { padding: 14px 18px; }
+.typing-dot { display: inline-block; width: 8px; height: 8px; background: var(--text2); border-radius: 50%; margin: 0 2px; animation: bounce .8s infinite; }
+.typing-dot:nth-child(2) { animation-delay: .15s; }
+.typing-dot:nth-child(3) { animation-delay: .3s; }
+@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+.msg-suggestions { display: flex; flex-wrap: wrap; gap: 8px; align-self: flex-start; max-width: 100%; }
+.suggestion-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 7px 14px; font-size: 0.82rem; cursor: pointer; color: var(--primary); font-weight: 600; transition: var(--transition); }
+.suggestion-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.chat-input-area { display: flex; gap: 10px; padding: 12px 16px; background: var(--surface); border-top: 1px solid var(--border); align-items: flex-end; }
+.chat-input { flex: 1; border: 1.5px solid var(--border); border-radius: 20px; padding: 10px 16px; font-family: inherit; font-size: 0.9rem; resize: none; background: var(--bg); color: var(--text); max-height: 100px; }
+.chat-input:focus { border-color: var(--primary); outline: none; }
+.chat-send { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); border: none; color: #fff; font-size: 1.1rem; cursor: pointer; flex-shrink: 0; transition: var(--transition); }
 .chat-send:hover { background: var(--primary-dark); transform: scale(1.05); }
 .chat-send:disabled { opacity: .5; cursor: not-allowed; transform: none; }
 
@@ -1221,82 +1137,57 @@ function highlight(text, q) {
 }
 
 // ==================== ASSISTANT ====================
-const ASSISTANT_SYSTEM = `Ты — умный кулинарный помощник. У тебя есть доступ к базе рецептов пользователя.
-Помогай выбирать рецепты по:
-1. Имеющимся продуктам (ищи рецепты с этими ингредиентами в ингредиентах)
-2. Типу блюда (суп, гарнир, основное и т.д.)
-3. Категории
-4. Времени готовки
+const ANTHROPIC_API_KEY = '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';
+let chatHistory = [];
 
-Когда рекомендуешь рецепт — укажи его название в виде [RECIPE:id:Название], чтобы на него можно было нажать.
-Например: [RECIPE:5:Брокколи с курицей]
-
-Если спрашивают что докупить — посчитай разницу между нужными ингредиентами и имеющимися.
+const ASSISTANT_SYSTEM = `Ты кулинарный помощник. У пользователя есть личная кулинарная книга с рецептами. 
+Помогай находить рецепты, предлагай что приготовить из имеющихся продуктов, отвечай на вопросы о приготовлении.
+Когда рекомендуешь рецепт из базы, упоминай его название. Если рецепт есть в базе, пиши [RECIPE:id:название].
 Отвечай по-русски, кратко и дружелюбно.`;
 
 async function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if (!text) return;
-  
-  input.value = '';
-  input.style.height = 'auto';
+  input.value = ''; input.style.height = 'auto';
   document.getElementById('chatSend').disabled = true;
-  
   appendMsg('user', text);
   chatHistory.push({ role: 'user', content: text });
-  
   const typingEl = appendTyping();
-  
-  // Build context from recipes
-  const recipeContext = recipes.slice(0, 50).map(r => 
+  const recipeContext = recipes.slice(0, 50).map(r =>
     `ID:${r.id} "${r.title}" [${r.categories}] Ингредиенты: ${(r.ingredients||'').replace(/\n/g,' ')} Время: ${r.totalTime||r.cookingTime||'?'}`
   ).join('\n');
-  
-  const messages = [
-    { role: 'user', content: `База рецептов (первые 50):\n${recipeContext}\n\n---\nВопрос пользователя: ${text}` }
-  ];
-  if (chatHistory.length > 2) {
-    messages.unshift(...chatHistory.slice(-4, -1).map(m => ({ role: m.role, content: m.content })));
-  }
-  
+  const messages = [{ role: 'user', content: `База рецептов:\n${recipeContext}\n\n---\nВопрос: ${text}` }];
+  if (chatHistory.length > 2) messages.unshift(...chatHistory.slice(-4,-1));
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: ASSISTANT_SYSTEM,
-        messages
-      })
+      headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 800, system: ASSISTANT_SYSTEM, messages })
     });
     const data = await resp.json();
-    const reply = data.content?.[0]?.text || 'Извините, не смог ответить. Попробуйте еще раз.';
+    const reply = data.content?.[0]?.text || 'Извините, попробуйте ещё раз.';
     chatHistory.push({ role: 'assistant', content: reply });
     typingEl.remove();
     appendMsg('assistant', formatAssistantMsg(reply));
   } catch(e) {
     typingEl.remove();
-    appendMsg('assistant', '😔 Не удалось подключиться к AI. Проверьте интернет.\n\nТем не менее, я могу помочь найти рецепты локально. Попробуйте поиск 🔍');
+    appendMsg('assistant', '😔 Ошибка соединения. Проверьте интернет и попробуйте снова.');
   }
-  
   document.getElementById('chatSend').disabled = false;
 }
 
 function formatAssistantMsg(text) {
   return text.replace(/\[RECIPE:(\d+):([^\]]+)\]/g, (_, id, name) =>
-    `<a onclick="openRecipe(${id})" style="cursor:pointer">${name}</a>`
+    `<a onclick="openRecipe(${id});showPage('detail',${id})" style="cursor:pointer;color:var(--primary);font-weight:700;">${name}</a>`
   ).replace(/\n/g, '<br>');
 }
 
 function appendMsg(role, html) {
   const chat = document.getElementById('chatArea');
   const el = document.createElement('div');
-  el.className = `msg ${role}`;
-  el.innerHTML = html;
-  chat.appendChild(el);
-  chat.scrollTop = chat.scrollHeight;
+  el.className = `msg ${role}`; el.innerHTML = html;
+  chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
   return el;
 }
 
@@ -1305,8 +1196,7 @@ function appendTyping() {
   const el = document.createElement('div');
   el.className = 'msg assistant typing';
   el.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
-  chat.appendChild(el);
-  chat.scrollTop = chat.scrollHeight;
+  chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
   return el;
 }
 
@@ -1315,8 +1205,7 @@ function addSuggestions(items) {
   const el = document.createElement('div');
   el.className = 'msg-suggestions';
   el.innerHTML = items.map(s => `<button class="suggestion-btn" onclick="sendSuggestion('${s}')">${s}</button>`).join('');
-  chat.appendChild(el);
-  chat.scrollTop = chat.scrollHeight;
+  chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
 }
 
 function sendSuggestion(text) {
@@ -1331,161 +1220,7 @@ function autoResize(el) {
 
 function initChat() {
   appendMsg('assistant', '👋 Привет! Я ваш кулинарный помощник.<br><br>Я могу:<br>• Подобрать рецепт по продуктам<br>• Найти что приготовить на обед/ужин<br>• Подсказать что докупить<br>• Ответить на вопросы о рецептах');
-  addSuggestions([
-    '🥕 Что приготовить из курицы?',
-    '🍲 Хочу суп',
-    '⚡ Быстрый ужин за 30 мин',
-    '🥦 Правильное питание'
-  ]);
-}
-
-// ==================== ADD RECIPE ====================
-function initAddForm() {
-  const cats = getAllCategories().map(([c]) => c);
-  document.getElementById('newCatsCheckboxes').innerHTML = cats.map((c, i) => `
-    <input type="checkbox" class="cat-checkbox" id="cat_${i}" value="${c}">
-    <label class="cat-checkbox-label" for="cat_${i}">${CAT_ICONS[c]||''} ${c}</label>
-  `).join('');
-  
-  const saved = localStorage.getItem(SHEET_URL_KEY);
-  if (saved) document.getElementById('sheetUrl').value = saved;
-}
-
-function saveSheetUrl() {
-  const url = document.getElementById('sheetUrl').value.trim();
-  if (url) { localStorage.setItem(SHEET_URL_KEY, url); showToast('✅ URL сохранён'); }
-}
-
-function addRecipe() {
-  const title = document.getElementById('newTitle').value.trim();
-  const ingredients = document.getElementById('newIngredients').value.trim();
-  const instructions = document.getElementById('newInstructions').value.trim();
-  
-  if (!title) { showToast('⚠️ Введите название рецепта'); return; }
-  if (!ingredients) { showToast('⚠️ Добавьте ингредиенты'); return; }
-  
-  const cats = [...document.querySelectorAll('.cat-checkbox:checked')].map(e => e.value).join(';');
-  
-  const newId = Math.max(...recipes.map(r => r.id), 0) + 1;
-  const recipe = {
-    id: newId,
-    title,
-    description: document.getElementById('newDescription').value.trim(),
-    preparationTime: document.getElementById('newPrepTime').value.trim(),
-    cookingTime: document.getElementById('newCookTime').value.trim(),
-    totalTime: document.getElementById('newTotalTime').value.trim(),
-    quantity: document.getElementById('newQuantity').value.trim(),
-    ingredients,
-    instructions,
-    notes: document.getElementById('newNotes').value.trim(),
-    rating: document.getElementById('newRating').value,
-    categories: cats,
-    source: document.getElementById('newSource').value.trim(),
-    favorite: false,
-    nutrition: '', tags: '', video: '', inactiveTime: '', originalPicture: ''
-  };
-  
-  recipes.push(recipe);
-  
-  // Reset form
-  ['newTitle','newDescription','newPrepTime','newCookTime','newTotalTime','newQuantity',
-   'newIngredients','newInstructions','newNotes','newSource'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-  document.getElementById('newRating').value = '';
-  document.querySelectorAll('.cat-checkbox:checked').forEach(c => c.checked = false);
-  
-  showToast('🎉 Рецепт добавлен!');
-  
-  // Try to save to Google Sheets via Apps Script if URL configured
-  const sheetUrl = localStorage.getItem(SHEET_URL_KEY);
-  if (sheetUrl) saveToSheet(recipe, sheetUrl);
-  
-  setTimeout(() => openRecipe(newId), 1000);
-}
-
-async function saveToSheet(recipe, url) {
-  try {
-    const execUrl = url.replace('/edit', '/exec').replace(/\?.*$/, '');
-    await fetch(execUrl, {
-      method: 'POST',
-      mode: 'no-cors',
-      body: JSON.stringify(recipe)
-    });
-  } catch(e) { /* silent fail */ }
-}
-
-// ==================== TOAST ====================
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
-}
-
-// ==================== GOOGLE SHEETS LOADER ====================
-const SHEET_ID = '1_nZ5HVppORdwNk4LlT8_gIlra58-0zKZiUUePdf2C3U';
-
-async function loadFromGoogleSheets() {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
-  const response = await fetch(url);
-  if (!response.ok) throw new Error('Не удалось загрузить таблицу');
-  const csv = await response.text();
-  return parseCSV(csv);
-}
-
-function parseCSV(csv) {
-  const lines = csv.split('\n');
-  if (lines.length < 2) return [];
-  
-  // Parse header row - remove quotes
-  const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
-  
-  const recipes = [];
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
-    
-    const values = parseCSVLine(line);
-    if (values.length < 2) continue;
-    
-    const recipe = {};
-    headers.forEach((h, idx) => {
-      recipe[h] = (values[idx] || '').replace(/\\n/g, '\n').trim();
-    });
-    
-    // Normalize fields
-    recipe.id = recipe.id ? parseInt(recipe.id) : (i);
-    recipe.favorite = recipe.favorite === 'true' || recipe.favorite === 'TRUE' || recipe.favorite === '1';
-    
-    if (recipe.title) recipes.push(recipe);
-  }
-  return recipes;
-}
-
-function parseCSVLine(line) {
-  const result = [];
-  let current = '';
-  let inQuotes = false;
-  
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (ch === '"') {
-      if (inQuotes && line[i+1] === '"') {
-        current += '"';
-        i++;
-      } else {
-        inQuotes = !inQuotes;
-      }
-    } else if (ch === ',' && !inQuotes) {
-      result.push(current);
-      current = '';
-    } else {
-      current += ch;
-    }
-  }
-  result.push(current);
-  return result;
+  addSuggestions(['🥕 Что приготовить из курицы?', '🍲 Хочу суп', '⚡ Быстрый ужин за 30 мин', '🥦 Правильное питание']);
 }
 
 // ==================== REFRESH FROM SHEETS ====================
