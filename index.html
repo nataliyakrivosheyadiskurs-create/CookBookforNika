@@ -1258,14 +1258,9 @@ async function refreshFromSheets() {
 }
 
 
-window.addEventListener('DOMContentLoaded', async () => {
-  const overlay = document.getElementById('loadingOverlay');
-  const loadingText = overlay.querySelector('p');
-
-  // Сразу запускаем приложение с встроенными данными
+window.addEventListener('DOMContentLoaded', () => {
   recipes = [...RECIPES_DATA];
-  loadingText.textContent = 'Загрузка...';
-
+  const overlay = document.getElementById('loadingOverlay');
   overlay.style.transition = 'opacity .4s';
   overlay.style.opacity = '0';
   setTimeout(() => {
@@ -1273,25 +1268,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('app').style.display = 'flex';
     renderHome();
     renderCookbook();
-    initChat();
     initAddForm();
   }, 400);
-
-  // Пробуем загрузить из Google Sheets в фоне
-  try {
-    const sheetRecipes = await Promise.race([
-      loadFromGoogleSheets(),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
-    ]);
-    if (sheetRecipes && sheetRecipes.length > 0) {
-      window.RECIPES_DATA = sheetRecipes;
-      recipes = [...sheetRecipes];
-      renderHome();
-      renderCookbook();
-    }
-  } catch (e) {
-    console.warn('Google Sheets недоступен, используем встроенные данные');
-  }
 });
 </script>
 </body>
