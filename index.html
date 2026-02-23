@@ -1261,59 +1261,36 @@ async function refreshFromSheets() {
 window.addEventListener('DOMContentLoaded', async () => {
   const overlay = document.getElementById('loadingOverlay');
   const loadingText = overlay.querySelector('p');
-  
+
+  // Сразу запускаем приложение с встроенными данными
+  recipes = [...RECIPES_DATA];
+  loadingText.textContent = 'Загрузка...';
+
+  overlay.style.transition = 'opacity .4s';
+  overlay.style.opacity = '0';
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    renderHome();
+    renderCookbook();
+    initChat();
+    initAddForm();
+  }, 400);
+
+  // Пробуем загрузить из Google Sheets в фоне
   try {
-    loadingText.textContent = 'Загрузка рецептов из таблицы...';
-    
-    let loaded = false;
-    // Try loading from Google Sheets
-    try {
-      const sheetRecipes = await Promise.race([
-        loadFromGoogleSheets(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000))
-      ]);
-      
-      if (sheetRecipes && sheetRecipes.length > 0) {
-        window.RECIPES_DATA = sheetRecipes;
-        recipes = [...sheetRecipes];
-        loaded = true;
-        loadingText.textContent = `Загружено ${sheetRecipes.length} рецептов ✓`;
-      }
-    } catch (e) {
-      console.warn('Google Sheets недоступен, используем встроенные данные:', e.message);
-      loadingText.textContent = 'Использую локальные данные...';
-    }
-    
-    if (!loaded) {
-      // Fallback to embedded data
-      recipes = [...RECIPES_DATA];
-    }
-    
-    await new Promise(r => setTimeout(r, 500));
-    
-    overlay.style.transition = 'opacity .5s';
-    overlay.style.opacity = '0';
-    setTimeout(() => {
-      overlay.style.display = 'none';
-      document.getElementById('app').style.display = 'flex';
+    const sheetRecipes = await Promise.race([
+      loadFromGoogleSheets(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
+    ]);
+    if (sheetRecipes && sheetRecipes.length > 0) {
+      window.RECIPES_DATA = sheetRecipes;
+      recipes = [...sheetRecipes];
       renderHome();
       renderCookbook();
-      initChat();
-      initAddForm();
-    }, 500);
-    
+    }
   } catch (e) {
-    console.error('Init error:', e);
-    recipes = [...RECIPES_DATA];
-    overlay.style.opacity = '0';
-    setTimeout(() => {
-      overlay.style.display = 'none';
-      document.getElementById('app').style.display = 'flex';
-      renderHome();
-      renderCookbook();
-      initChat();
-      initAddForm();
-    }, 300);
+    console.warn('Google Sheets недоступен, используем встроенные данные');
   }
 });
 </script>
