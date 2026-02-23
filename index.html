@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>🍳 Моя кулинарная книга</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fdf8f3;
+  --surface: #fff;
+  --surface2: #f5efe6;
+  --primary: #c0392b;
+  --primary-dark: #922b21;
+  --accent: #e67e22;
+  --accent2: #27ae60;
+  --text: #2c1810;
+  --text2: #7d5a50;
+  --border: #e8d5c4;
+  --shadow: 0 4px 20px rgba(44,24,16,.08);
+  --shadow-hover: 0 8px 32px rgba(44,24,16,.16);
+  --radius: 16px;
+  --transition: .25s cubic-bezier(.4,0,.2,1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== LAYOUT ===== */
+.app { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ===== HEADER ===== */
+.header {
+  background: var(--primary);
+  color: white;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+.header-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-back {
+  background: rgba(255,255,255,.2);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: var(--transition);
+}
+.header-back:hover { background: rgba(255,255,255,.35); }
+.header-back.show { display: flex; }
+
+/* ===== NAV ===== */
+.nav {
+  background: var(--surface);
+  border-top: 2px solid var(--border);
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: 0 -2px 12px rgba(0,0,0,.08);
+}
+.nav-btn {
+  flex: 1;
+  border: none;
+  background: none;
+  padding: 10px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  color: var(--text2);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+.nav-btn .icon { font-size: 1.4rem; }
+.nav-btn.active { color: var(--primary); }
+.nav-btn:hover { color: var(--primary); }
+
+/* ===== PAGES ===== */
+.page { display: none; flex: 1; padding-bottom: 76px; }
+.page.active { display: block; }
+
+/* ===== HOME PAGE ===== */
+.home-hero {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+  padding: 32px 20px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.home-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.home-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  position: relative;
+  margin-bottom: 6px;
+}
+.home-hero p {
+  font-size: 0.9rem;
+  opacity: .85;
+  position: relative;
+}
+.home-stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 20px;
+  position: relative;
+}
+.stat {
+  background: rgba(255,255,255,.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-align: center;
+}
+.stat-num { font-size: 1.3rem; font-weight: 700; display: block; }
+.stat-label { font-size: 0.7rem; opacity: .85; }
+
+.home-sections { padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.quick-cats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+.cat-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+.cat-card:hover, .cat-card:active {
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+.cat-icon { font-size: 1.6rem; margin-bottom: 4px; }
+.cat-name { font-size: 0.75rem; font-weight: 700; color: var(--text); }
+.cat-count { font-size: 0.7rem; color: var(--text2); }
+
+.fav-cards { display: flex; flex-direction: column; gap: 10px; }
+.mini-recipe-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 2px solid transparent;
+}
+.mini-recipe-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-hover);
+}
+.mini-recipe-emoji { font-size: 1.8rem; width: 44px; text-align: center; }
+.mini-recipe-info { flex: 1; min-width: 0; }
+.mini-recipe-title { font-weight: 700; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-recipe-meta { font-size: 0.75rem; color: var(--text2); margin-top: 2px; }
+
+/* ===== COOKBOOK PAGE ===== */
+.cookbook-header { padding: 16px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.search-box {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 30px;
+  padding: 8px 16px;
+  gap: 8px;
+  transition: var(--transition);
+}
+.search-box:focus-within { border-color: var(--primary); }
+.search-box input {
+  flex: 1;
+  border: none;
+  background: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  outline: none;
+}
+.search-icon { color: var(--text2); font-size: 1.1rem; }
+.search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+.filter-chip {
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text2);
+}
+.filter-chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+.filter-chip:hover { border-color: var(--primary); color: var(--primary); }
+.filter-chip.active:hover { color: white; }
+
+.recipes-grid {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+.recipe-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  border: 2px solid transparent;
+  position: relative;
+}
+.recipe-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--primary);
+}
+.recipe-card-emoji { font-size: 2rem; margin-bottom: 8px; display: block; }
+.recipe-card-title {
+  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.recipe-card-time {
+  font-size: 0.72rem;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.recipe-card-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+.recipe-cat-tag {
+  background: var(--surface2);
+  color: var(--text2);
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 8px;
+}
+.recipe-card-rating { position: absolute; top: 10px; right: 10px; font-size: 0.72rem; color: var(--accent); }
+.recipe-card-fav { position: absolute; top: 10px; right: 10px; font-size: 0.9rem; }
+.no-results {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 48px 16px;
+  color: var(--text2);
+}
+.no-results .emoji { font-size: 3rem; display: block; margin-bottom: 12px; }
+
+/* ===== RECIPE DETAIL ===== */
+.recipe-detail { max-width: 700px; margin: 0 auto; }
+.recipe-detail-header {
+  background: linear-gradient(160deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+  padding: 24px 20px 32px;
+  text-align: center;
+}
+.recipe-detail-emoji { font-size: 3.5rem; margin-bottom: 12px; display: block; }
+.recipe-detail-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+.recipe-detail-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.detail-meta-item {
+  background: rgba(255,255,255,.2);
+  padding: 5px 12px;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.recipe-detail-body { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.detail-section {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.detail-section-title {
+  background: var(--surface2);
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.detail-section-body { padding: 14px 16px; }
+.ingredient-item {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ingredient-item:last-child { border-bottom: none; }
+.ingredient-item::before {
+  content: '•';
+  color: var(--primary);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.step-item {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.step-item:last-child { border-bottom: none; }
+.step-num {
+  min-width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.notes-text {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--text);
+  background: #fffde7;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent);
+}
+.source-link {
+  color: var(--primary);
+  font-size: 0.8rem;
+  word-break: break-all;
+  text-decoration: none;
+}
+.source-link:hover { text-decoration: underline; }
+.detail-cats { display: flex; flex-wrap: wrap; gap: 6px; }
+.detail-cat-tag {
+  background: var(--primary);
+  color: white;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+/* ===== ASSISTANT PAGE ===== */
+.assistant-page { display: flex; flex-direction: column; height: calc(100vh - 76px - 60px); }
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.msg {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  animation: msgIn .3s ease;
+}
+@keyframes msgIn { from { opacity:0; transform: translateY(8px); } }
+.msg.user {
+  align-self: flex-end;
+  background: var(--primary);
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+.msg.assistant {
+  align-self: flex-start;
+  background: var(--surface);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+  box-shadow: var(--shadow);
+}
+.msg.assistant a { color: var(--primary); cursor: pointer; font-weight: 700; text-decoration: underline; }
+.msg-suggestions {
+  align-self: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: 90%;
+}
+.suggestion-btn {
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.suggestion-btn:hover { background: var(--primary); color: white; }
+.typing { align-self: flex-start; }
+.typing-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  background: var(--text2);
+  border-radius: 50%;
+  animation: bounce .9s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: .2s; }
+.typing-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+
+.chat-input-area {
+  padding: 12px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+.chat-input {
+  flex: 1;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  resize: none;
+  max-height: 100px;
+  outline: none;
+  background: var(--bg);
+  color: var(--text);
+  transition: var(--transition);
+}
+.chat-input:focus { border-color: var(--primary); }
+.chat-send {
+  background: var(--primary);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+.chat-send:hover { background: var(--primary-dark); transform: scale(1.05); }
+.chat-send:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+/* ===== ADD RECIPE PAGE ===== */
+.add-form { padding: 16px; max-width: 700px; margin: 0 auto; }
+.form-group { margin-bottom: 14px; }
+.form-label {
+  display: block;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+.form-label .req { color: var(--primary); }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  transition: var(--transition);
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--primary); background: white; }
+.form-textarea { resize: vertical; min-height: 90px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cats-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+.cat-checkbox {
+  display: none;
+}
+.cat-checkbox-label {
+  padding: 5px 12px;
+  border-radius: 14px;
+  border: 2px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text2);
+}
+.cat-checkbox:checked + .cat-checkbox-label {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+.add-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 8px;
+}
+.add-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.sheet-config {
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border: 2px solid var(--border);
+}
+.sheet-config h3 { font-size: 0.95rem; margin-bottom: 8px; font-weight: 700; }
+.sheet-config p { font-size: 0.78rem; color: var(--text2); line-height: 1.5; }
+
+/* ===== SEARCH PAGE ===== */
+.search-page-inner { padding: 16px; }
+.search-box-large {
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 30px;
+  padding: 12px 20px;
+  gap: 10px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+  transition: var(--transition);
+}
+.search-box-large:focus-within { border-color: var(--primary); }
+.search-box-large input {
+  flex: 1;
+  border: none;
+  background: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  color: var(--text);
+  outline: none;
+}
+.search-box-large .search-icon { font-size: 1.3rem; color: var(--text2); }
+.search-results-info { font-size: 0.82rem; color: var(--text2); margin-bottom: 12px; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: #333;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  z-index: 999;
+  transition: transform .3s ease;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== LOADING ===== */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  flex-direction: column;
+  gap: 16px;
+}
+.loading-spinner {
+  width: 40px; height: 40px;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 600px) {
+  .recipes-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .quick-cats { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .home-hero h1 { font-size: 2.4rem; }
+}
+@media (min-width: 900px) {
+  .app { flex-direction: row; }
+  .nav {
+    position: static;
+    flex-direction: column;
+    width: 200px;
+    height: 100vh;
+    border-top: none;
+    border-right: 2px solid var(--border);
+    padding-top: 20px;
+  }
+  .nav-btn { flex-direction: row; justify-content: flex-start; padding: 12px 20px; font-size: 0.85rem; gap: 10px; }
+  .nav-btn .icon { font-size: 1.2rem; }
+  .page { padding-bottom: 0; }
+  .header { position: sticky; }
+  .main-content { flex: 1; overflow-y: auto; height: calc(100vh - 60px); }
+}
+</style>
+</head>
+<body>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  <p style="font-family: 'Playfair Display',serif; color: var(--text);">Загрузка рецептов...</p>
+</div>
+
+<div class="app" id="app" style="display:none">
+  <header class="header">
+    <button class="header-back" id="headerBack" onclick="goBack()">←</button>
+    <div class="header-title" id="headerTitle">🍳 Кулинарная книга</div>
+    <div style="width:36px"></div>
+  </header>
+  <nav class="nav">
+    <button class="nav-btn active" id="nav-home" onclick="showPage('home')">
+      <span class="icon">🏠</span><span>Главная</span>
+    </button>
+    <button class="nav-btn" id="nav-cookbook" onclick="showPage('cookbook')">
+      <span class="icon">📖</span><span>Рецепты</span>
+    </button>
+    <button class="nav-btn" id="nav-search" onclick="showPage('search')">
+      <span class="icon">🔍</span><span>Поиск</span>
+    </button>
+    <button class="nav-btn" id="nav-assistant" onclick="showPage('assistant')">
+      <span class="icon">🤖</span><span>Помощник</span>
+    </button>
+    <button class="nav-btn" id="nav-add" onclick="showPage('add')">
+      <span class="icon">➕</span><span>Добавить</span>
+    </button>
+  </nav>
+  <div class="main-content" id="mainContent">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="page-home">
+    <div class="home-hero">
+      <h1>Моя кулинарная книга</h1>
+      <p>Все любимые рецепты в одном месте</p>
+      <div class="home-stats" id="homeStats"></div>
+    </div>
+    <div class="home-sections">
+      <div>
+        <div class="section-title">📂 Категории</div>
+        <div class="quick-cats" id="quickCats"></div>
+      </div>
+      <div>
+        <div class="section-title">⭐ Избранное</div>
+        <div class="fav-cards" id="favCards"></div>
+      </div>
+      <div>
+        <div class="section-title">🕐 Быстрые рецепты (до 30 мин)</div>
+        <div class="fav-cards" id="quickRecipes"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COOKBOOK PAGE -->
+  <div class="page" id="page-cookbook">
+    <div class="cookbook-header">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="cookbookSearch" placeholder="Поиск рецептов..." oninput="filterRecipes()">
+        <button class="search-clear" onclick="clearCookbookSearch()" id="clearSearch" style="display:none">✕</button>
+      </div>
+    </div>
+    <div class="filter-bar" id="filterBar"></div>
+    <div class="recipes-grid" id="recipesGrid"></div>
+  </div>
+
+  <!-- SEARCH PAGE -->
+  <div class="page" id="page-search">
+    <div class="search-page-inner">
+      <div class="search-box-large">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Введите название или ингредиент..." oninput="doSearch()" autofocus>
+      </div>
+      <div class="search-results-info" id="searchInfo"></div>
+      <div id="searchResults"></div>
+    </div>
+  </div>
+
+  <!-- ASSISTANT PAGE -->
+  <div class="page" id="page-assistant">
+    <div class="assistant-page">
+      <div class="chat-area" id="chatArea"></div>
+      <div class="chat-input-area">
+        <textarea class="chat-input" id="chatInput" placeholder="Спросите у помощника..." rows="1"
+          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}"
+          oninput="autoResize(this)"></textarea>
+        <button class="chat-send" id="chatSend" onclick="sendMessage()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD RECIPE PAGE -->
+  <div class="page" id="page-add">
+    <div class="add-form">
+      <div class="sheet-config" id="sheetConfigBlock">
+        <h3>🔗 Синхронизация с Google Таблицей</h3>
+        <p style="margin-bottom:10px;">Приложение загружает рецепты из вашей таблицы при каждом открытии. Добавьте рецепт в таблицу — он появится здесь после обновления.</p>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <a href="https://docs.google.com/spreadsheets/d/1_nZ5HVppORdwNk4LlT8_gIlra58-0zKZiUUePdf2C3U/edit" target="_blank" style="color:var(--primary);font-size:0.82rem;font-weight:700;text-decoration:none;">📄 Открыть таблицу ↗</a>
+          <button onclick="refreshFromSheets()" id="refreshBtn" style="background:var(--primary);border:none;color:white;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:0.85rem;font-weight:700;margin-left:auto;">🔄 Обновить рецепты</button>
+        </div>
+        <p style="margin-top:8px; color: var(--accent); font-size:0.76rem;" id="syncStatus">✓ Рецепты загружены из таблицы при старте приложения</p>
+      </div>
+      <h2 style="font-family:'Playfair Display',serif; margin-bottom:16px;">Добавить рецепт</h2>
+      <div class="form-group">
+        <label class="form-label">Название <span class="req">*</span></label>
+        <input type="text" class="form-input" id="newTitle" placeholder="Например: Борщ классический">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Описание</label>
+        <input type="text" class="form-input" id="newDescription" placeholder="Краткое описание">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">⏱ Подготовка</label>
+          <input type="text" class="form-input" id="newPrepTime" placeholder="15 минут">
+        </div>
+        <div class="form-group">
+          <label class="form-label">🔥 Готовка</label>
+          <input type="text" class="form-input" id="newCookTime" placeholder="30 минут">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">⏰ Общее время</label>
+          <input type="text" class="form-input" id="newTotalTime" placeholder="45 минут">
+        </div>
+        <div class="form-group">
+          <label class="form-label">🍽 Порций</label>
+          <input type="text" class="form-input" id="newQuantity" placeholder="4">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">🥕 Ингредиенты <span class="req">*</span></label>
+        <textarea class="form-textarea" id="newIngredients" placeholder="Каждый ингредиент с новой строки&#10;Морковь - 1 шт&#10;Лук - 1 шт"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">📋 Инструкция <span class="req">*</span></label>
+        <textarea class="form-textarea" id="newInstructions" placeholder="Шаги приготовления (можно нумеровать)" style="min-height:120px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">💬 Заметки</label>
+        <textarea class="form-textarea" id="newNotes" placeholder="Ваши наблюдения, советы, замены..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">⭐ Оценка</label>
+        <select class="form-select" id="newRating">
+          <option value="">— Без оценки —</option>
+          <option value="5.0">⭐⭐⭐⭐⭐ 5.0</option>
+          <option value="4.5">⭐⭐⭐⭐½ 4.5</option>
+          <option value="4.0">⭐⭐⭐⭐ 4.0</option>
+          <option value="3.5">⭐⭐⭐½ 3.5</option>
+          <option value="3.0">⭐⭐⭐ 3.0</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">📂 Категории</label>
+        <div class="cats-checkboxes" id="newCatsCheckboxes"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">🔗 Источник</label>
+        <input type="text" class="form-input" id="newSource" placeholder="URL или название источника">
+      </div>
+      <button class="add-btn" onclick="addRecipe()">✅ Добавить рецепт</button>
+    </div>
+  </div>
+
+  <!-- RECIPE DETAIL (hidden by default) -->
+  <div class="page" id="page-detail">
+    <div class="recipe-detail" id="recipeDetailContent"></div>
+  </div>
+
+  </div><!-- end main-content -->
+</div><!-- end app -->
+<div class="toast" id="toast"></div>
+
+<script>
+const RECIPES_DATA = [{"title":"Азу из говядины","description":"","preparationTime":"15 минут","cookingTime":"1.30 часа","inactiveTime":"","totalTime":"2 часа (+/-)","quantity":"","ingredients":"Азу (говядина) - 600 гр\nЛуковица - 1 небольшая луковица\nСметана (20%) - 1 большая банка\nМорковка - 1 штука (?)\nМука - 1.5 ст. ложки\nСоль, перец - по вкусу","instructions":"Лук мелко нарезать. \nВ сковороду налить много растительного масла, на СИЛЬНОМ ОГНЕ припустить лук, до золотистого цвета можно не доводить. \nТут можно добавить морковку, натереть ее на крупной терке.\nДобавить к луку мясо и муку. Жарить 7-10 минут, постоянно перемешивая. \nДобавить сметану (всю банку) и воду. Посолить и поперчить. Перемешать. \nУбавить огонь до минимального (1-1.5, меньше 1 мало), накрыть крышкой, тушить больше часа (тушила 1.15), каждые 15 минут перемешивать. \nВоды должно быть достаточно, она должна покрывать мясо. \nЕсли очень жидко - к концу готовки убрать крышку и дать загустеть, постоянно перемешивая. ","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Говядина","tags":"","video":"","source":"","originalPicture":"","id":1},{"title":"Банановая запеканка в мультиварке","description":"","preparationTime":"30 минут","cookingTime":"1 час","inactiveTime":"30 минут","totalTime":"2 часа","quantity":"","ingredients":"Творог 300 гр\nЯйца 3 шт\nРазрыхлитель 1\\2 ч.л.\nВанилин \nКефир 200 гр\nМанка 100 гр\nСахар по вкусу ( сахзам)\nИзюм 25 гр\nБананы 1 шт","instructions":"1. Смешиваем манку с кефиром и даём набухнуть примерно 30 минут\t\n2. Добавляем творог и блендируем до однородности.\n\n3. Яйца взбиваем с сахаром или сахарзамом и добавляем к творогу и манке. Взбиваем до однородности. Добавляем ванилин и разрыхлитель\n\n4. Запариваем изюм. Чашу мультиварки смазываем маслом. На дно чаши мультиварки колечками нарезаем бананы и равномерно распределяем.\n\n5. Заливаем творожной массой (она получилась жидкая). Сверху распределяем изюм. Ставим в режим выпекания на 1 час.\n\n6. Даём запеканке выстоятся\nВкус нежный.","notes":"","nutrition":"","favorite":false,"rating":"4.5","categories":"Десерты;В мультиварке","tags":"","video":"","source":"https://yummybook.ru/recept/bananovaya-zapekanka-v-multivarke","originalPicture":"","id":2},{"title":"Белковый салат с курицей и яблоком","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"20 минут","quantity":"","ingredients":"Куриная грудка 100 грамм\nЯблоко 80 грамм\nСыр твердый 25 грамм\nЯйцо 50 грамм\nЙогурт 10% 30 грамм","instructions":"Грудку отварить\nЯйцо отварить\nГрудку, яблоко и яйцо нарезать кубиками\nДобавить сыр\nЗаправить йогуртом\nПеремешать","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Правильное питание;Холодные закуски","tags":"","video":"","source":"","originalPicture":"","id":3},{"title":"Блинчики","description":"","preparationTime":"15 минут","cookingTime":"30 минут","inactiveTime":"20 минут","totalTime":"60 минут","quantity":"","ingredients":"Мука - 150 г\nМолоко – 400 мл\nЯйца куриные - 2 шт.\nСахар – 0,5 ч. ложки\nСоль - 1 щепотка\nРастительное масло для жарки - 2-3 ст. ложки","instructions":"Муку просеять.\n\nДобавить в муку соль, сахар. Перемешать.\n\nСделать в центре углубление и влить треть молока.\n\nХорошо перемешать (до однородности). Вбить яйца.\n\nПеремешать. Добавить оставшееся молоко. Хорошо перемешать.\n\nОставить тесто на 15-20 минут. Перемешать.\n\nРазогреть сковороду, налить немного растительного масла (0,5 ч. ложки). Распределить по всей сковороде. Налить в центр сковороды тесто (0,5-0,7 половника). Распределить блинчик по всей сковороде тонким слоем. Печь блинчик на среднем огне 2–3 минуты, перевернуть и печь так же с другой стороны до золотистого цвета.\n\nТак испечь все блинчики и сложить их стопкой","notes":"","nutrition":"","favorite":false,"rating":"4.5","categories":"","tags":"","video":"","source":"","originalPicture":"","id":4},{"title":"Брокколи с курицей тушеная в сметане","description":"","preparationTime":"10 минут","cookingTime":"25 минут","inactiveTime":"","totalTime":"35 минут","quantity":"2","ingredients":"Брокколи – 1 головка\nКуриное филе – 2 шт.\nСладкий перец - 1/2 шт.\nСметана – 100 г\nСоль\nПерец","instructions":"1. Брокколи разберите на соцветия и отварите 3 минуты после закипания в подсоленной воде. Откиньте на дуршлаг, чтобы стекал лишняя вода. Замороженную брокколи отваривать не нужно. Сразу выкладываем ее на сковороду.\n\n2. Нарежем куриное филе кусочками. Вы можете взять любую часть курицы, просто филе – самое удобное. Сладкий перец у нас большой, мясистый сорта парика, поэтому мы в ингредиентах указали взять только половинку перца. Нарезаем перец соломкой.\n\n3. Чтобы блюдо было диетическим, возьмите сковороду с антипригарным покрытием и обжарьте курицу без масла, пока оно не станет белым. Если сковорода хорошая, то мясо не пригорит. Добавьте к мясу сладкий перец.\n\n4. Теперь добавьте отваренную брокколи.\n\n5. Приправляем блюдо. Заливаем его сметаной. Перемешиваем и тушим под крышкой 20-25 минут.\n\n6. Блюдо самодостаточное, поэтому его можно подавать самостоятельно. Приятного аппетита.","notes":"Очень быстро выкипает жидкость. Либо сделать огонь поменьше, либо через 10 минут добавить воды, иначе сгорит","nutrition":"","favorite":false,"rating":"5.0","categories":"Правильное питание;Главные блюда;Курица","tags":"","video":"","source":"https://tutknow.ru/cookery/second_dishes/13699-brokkoli-s-kuricey-tushenaya-v-smetane.html","originalPicture":"","id":5},{"title":"Вишневый компот","description":"","preparationTime":"10 минут","cookingTime":"20 минут","inactiveTime":"","totalTime":"30","quantity":"","ingredients":"Вишня - 500 грамм\nВода - 1 литр\nСахар - 6 ст ложек","instructions":"Вишню перебрать, убрать веточки и листочки\nВ воду добавить сахар, довести до кипения\nДобавить в воду вишню. Еще раз прокипятить, снять с огня\nДать остыть","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Напитки","tags":"","video":"","source":"","originalPicture":"","id":6},{"title":"ГУСТОЙ СУП-ПЮРЕ С ТЫКВОЙ КАБАЧКАМИ И КАРТОШКОЙ","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"1 час","quantity":"4","ingredients":"Картошка - 3 шт\nМорковь - 1 шт\nЛук репчатый - 1 шт\nТыква - 150 гр  \nКабачки - 200 гр \nСоль - по вкусу\nПерец черный молотый - по вкусу\nМускатный орех - 1.3  гр\n","instructions":"Приготовим ингредиенты для овощного супа-пюре. По желанию набор овощей можно изменить по вкусу и наличию. Для получения менее калорийного диетического супчика в набор овощей лучше добавить цукини и, наоборот, исключить картофель. А для повседневного меню лучше сварить суп с картофелем, он получится сытным и питательным даже без мяса в составе. Картофель моем, чистим и нарезаем кубиками, чтобы он быстрее сварился.\n\nШаг 2.\nМорковь моем, чистим и нарезаем крупными кусочками или кружочками. Репчатый лук чистим от шелухи и разрезаем на несколько частей.\n\nШаг 3.\nКабачок моем, если кожица у него уже грубая снимаем ее, мякоть с семенами удаляем, нарезаем кабачок кубиками. Молодой кабачок можно нарезать вместе с кожицей.\n\nШаг 4.\nДля придания особого аромата в суп можно добавить кусочек свежей тыквы, она сделает суп еще полезнее. Для аромата можно добавить еще зубчик чеснока.\n\nШаг 5.\nКартофель и морковь кладем в кастрюлю, заливаем водой и ставим на огонь. Когда вода закипит, убавляем огонь до среднего, варим овощи около 10 минут. Затем в кастрюлю спускаем оставшиеся овощи: репчатый лук, кабачок и тыкву, этим овощам нужно меньше времени на варку, и чтобы в них сохранилось больше витаминов, лучше их не переваривать и сразу в кастрюлю с картофелем не закладывать.\n\nШаг 6.\nВарим на среднем огне еще около 15 минут. Добавляем соль, черный молотый перец, щепотку мускатного ореха и измельченный чеснок по вкусу. Перемешиваем, держим на огне еще пару минут. Выключаем огонь. Часть бульона сливаем. Овощи с остатком бульона с помощью блендера превращаем в пюре.\n\nШаг 7.\nЕсли суп-пюре получилось слишком густым, то подливаем еще немного оставленного овощного бульона. Ставим суп на огонь, даем закипеть, помешивая, выключаем огонь. Суп готов. Подаем его к столу, по желанию со сметаной и сухариками. Приятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Супы","tags":"","video":"","source":"https://1000.menu/cooking/58847-gustoi-sup-pure-s-tykvoi-kabachkami-i-kartoshkoi","originalPicture":"","id":7},{"title":"Грибной суп-пюре из шампиньонов","description":"","preparationTime":"20 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Шампиньоны - 300 Грамм\nКартофель - 500 Грамм\nЛук - 200 Грамм\nСливки 15-20 % - 500 Грамм\nРастительное масло - 2-3 Ст. ложек\nСоль - 1 Чайная ложка (половина используется при варке картофеля)\nЧерный молотый перец - 2-3 Щепоток (по вкусу)","instructions":"Чистим картошку, моем и нарезаем не слишком крупно. Заливаем водой так, чтобы она слегка покрывала картофель, солим и ставим варить.\nЛук чистим, мелко нарезаем и жарим на растительном масле.\n\nПока поджаривается лук, займемся грибами. Чистим их, моем и нарезаем.\n\nОтправляем грибы к луку, солим, перчим и поджариваем до тех пор, пока они не станут слегка покрываться золотистой корочкой.\n\nГотовые грибы измельчаем блендером.\n\nСливаем немного воды из уже сварившегося картофеля, добавляем к нему измельченную массу из лука и грибов. Вливаем сливки и подключаем к работе блендер. Измельчаем им суп до того состояния, которое вам больше всего по вкусу - можно в однородное пюре, можно остановиться, когда еще ощущаются небольшие комочки грибов и картофеля. Ставим суп опять на плиту и доводим до кипения ( не даем кипеть !!!). Пробуем и доводим до вкуса.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Супы","tags":"","video":"","source":"https://yandex.ru/turbo?text=https%3A%2F%2Fpovar.ru%2Frecipes%2Fgribnoi_sup-piure_iz_shampinonov-10834.html","originalPicture":"","id":8},{"title":"ДИЕТИЧЕСКИЕ КУРИНЫЕ КОТЛЕТЫ НА ПАРУ","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"1 час","quantity":"7","ingredients":"Куриный фарш 875  г\nЛук 1 шт\nБелый хлеб 3.5 г\nМолоко 175  мл\nЯйца 2 шт\nСоль по вкусу","instructions":"Подготовим продукты для котлет. Фарш я делала сама, из куриной грудки. Готовый фарш более жирный, котлеты из него не получатся диетическими. Хлеб берите не свежий, а чуть подсушенный, можно его заменить панировочными сухарями. Специи кладите по своему вкусу, я ограничилась одной солью.\n\nЛук надо почистить и измельчить, я натерла на мелкой терке.\n\nХлеб разломайте на кусочки и залейте молоком минут на пять, периодически надо будет его переворачивать, чтобы он хорошо размок. Молоко можно смело заменить водой. Когда хлеб достаточно размягчится, сливаем жидкость и разминаем его. Корочки лучше убрать.\n\nСоединяем фарш, лук и хлеб. Добавляем соль и яйцо.\n\nХорошо перемешиваем до полной однородности.\n\nЛепим из фарша шарики. Чтобы фарш не лип к рукам возьмите миску с холодной водой, и после каждой котлеты смачивайте руки.\n\nЯ готовила котлеты на пару в мультиварке на режиме пароварка 30 минут.\n\nВот такие у меня получились симпатичные котлетки.","notes":"","nutrition":"","favorite":false,"rating":"4.0","categories":"Главные блюда;Курица;В мультиварке","tags":"","video":"","source":"https://1000.menu/cooking/36232-dieticheskie-kurinye-kotlety-na-paru?book=4335436#similars","originalPicture":"","id":9},{"title":"ДИЕТИЧЕСКИЕ КУРИНЫЕ КОТЛЕТЫ НА ПАРУ","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Куриный фарш 500  гр\nЛук 1  шт\nБелый хлеб 2 ломтика\nМолоко 100  мл\nЯйца 1  шт\nСоль по вкусу","instructions":"\nПодготовим продукты для котлет. Фарш я делала сама, из куриной грудки. Готовый фарш более жирный, котлеты из него не получатся диетическими. Хлеб берите не свежий, а чуть подсушенный, можно его заменить панировочными сухарями. Специи кладите по своему вкусу, я ограничилась одной солью.\n\nЛук надо почистить и измельчить, я натерла на мелкой терке.\n\nХлеб разломайте на кусочки и залейте молоком минут на пять, периодически надо будет его переворачивать, чтобы он хорошо размок. Молоко можно смело заменить водой. Когда хлеб достаточно размягчится, сливаем жидкость и разминаем его. Корочки лучше убрать.\n\nСоединяем фарш, лук и хлеб. Добавляем соль и яйцо.\n\n\n\nХорошо перемешиваем до полной однородности.\n\nЛепим из фарша шарики. Чтобы фарш не лип к рукам возьмите миску с холодной водой, и после каждой котлеты смачивайте руки.\n\nЯ готовила котлеты на пару в мультиварке на режиме пароварка 30 минут.\n","notes":"","nutrition":"","favorite":false,"rating":"3.0","categories":"Правильное питание;Курица;Индейка;В мультиварке;Диета 5 стола","tags":"","video":"","source":"https://1000.menu/cooking/36232-dieticheskie-kurinye-kotlety-na-paru?book=4335436#similars","originalPicture":"","id":10},{"title":"Диетический салат с кальмарами, яйцами и овощами","description":"","preparationTime":"15 минут","cookingTime":"20 минут","inactiveTime":"","totalTime":"35 минут","quantity":"","ingredients":"кальмары свежемороженые – 400 гр\nогурец – 100 гр\nморковь – 100 гряйца – 2 шт\nйогурт натуральный – 50 гр\nсоль – по вкусу\nчерный молотый перец – по вкусу","instructions":"1. Подготовить кальмары. Опустить их в кипящую несоленую воду на 1 минуту, затем вытащить и очистить под проточной холодной водой от всех внешних и внутренних пленок. Остывшие отваренные кальмары нарезать колечками или соломкой в зависимости от их размера.\n\n2. Яйца отварить в течении 8 – 10 минут, охладить в холодной воде, почистить и порезать соломкой. Морковь порезать соломкой или потереть на крупной терке. Свежий огурец нарезать соломкой. Соединить в одной миске нарезанные кальмары, морковь и огурцы и яйца.\n\n3. Посолить и поперчить салат из кальмаров. Добавить йогурт и перемешать. Переложить салат из кальмаров, огурцов и моркови на блюдо и подавать на стол.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Правильное питание;Холодные закуски","tags":"","video":"","source":"https://yummybook.ru/recept/dieticheskij-salat-s-kalmarami-yajcami-i-ovoschami","originalPicture":"","id":11},{"title":"Домашний соус болоньезе","description":"Соус болоньезе - классика итальянской кухни. Вкуснейший соус из мясного фарша с помидорами и красным вином - идеальное дополнение к спагетти.","preparationTime":"30 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Фарш говяжий – 300 г\nПомидоры консервированные очищенные – 300 г\nВино красное сухое – 120 мл\nТоматная паста – 1,5 ст. ложки\nСыр твёрдый – 40 г\nМорковь – 70 г\nКорень сельдерея – 30-40 г\nЛук репчатый – 70 г\nЧеснок – 1 зубчик\nМасло растительное (для жарки) – 2 ст. ложки\nОрегано сушёный – по вкусу\nБазилик сушёный – по вкусу\nСоль – по вкусу\nПерец чёрный молотый – по вкусу","instructions":"Подготовить все необходимые продукты по списку.\nИз говядины заранее приготовить фарш.\nОчищенные консервированные помидоры измельчить с помощью блендера.\n\n\nОчищенные морковь, чеснок, лук и сельдерей нарезать небольшими по размеру кубиками.\n\n\nВ сковороде разогреть 1 ст. ложку масла и выложить туда все овощи. Обжарить 4-5 минут, помешивая.\n\n\nОтдельно разогреть оставшееся масло и обжарить говяжий фарш 4-5 минут. В процессе приготовления фарш разбивать лопаткой, чтобы не было крупных комочков.\n\n\nДобавить к фаршу предварительно обжаренные овощи. Следом влить в сковороду вино и выпарить его на среднем огне 6-7 минут.\n\n\nСпустя время добавить в сковороду измельчённые помидоры, томатную пасту, соль, чёрный перец и сушёные травы (орегано и базилик). Довести всё до кипения и прикрыть сковороду крышкой.\n\n\nТушить соус 1,5-2 часа на небольшом огне. Соус должен стать густым и насыщенным.\n\n\nСыр натереть на средней тёрке и добавить в сковороду. Перемешать.\n\n\nДомашний соус болоньезе готов.\nПодавать соус со спагетти.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Соусы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=165767","originalPicture":"","id":12},{"title":"Запечённое куриное филе с помидорами, перцем и кукурузой","description":"","preparationTime":"20 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Филе куриное - 600 г\nПерец сладкий (красный и желтый) - 400 г\nПомидоры - 250 г\nКукуруза консервированная - 100 г\nЧеснок - 5 зубчиков\nМука пшеничная - 30 г\nМасло растительное - 30 мл\nПаприка молотая - ½ ч. ложки\nБазилик сушеный - ½ ч. ложки\nТоматная паста - 1 столовая ложка\nСоль - по вкусу\nПерец черный молотый - по вкусу\nЗелень свежая для подачи - по вкусу","instructions":"Куриное филе промываем, промакиваем бумажным полотенцем и нарезаем полосками.\n\nВ полиэтиленовый пакет складываем куриное мясо, всыпаем муку, соль, перец и специи.\n\nЗавязываем пакет и тщательно встряхиваем.\n\nСладкий перец очищаем и нарезаем полосками.\n\nПомидоры нарезаем кубиками.\n\nЧеснок очищаем и мелко рубим.\n\nВ сковороде, на хорошо разогретом растительном масле обжариваем кусочки филе на сильном огне, помешивая, 5 минут.\n\nК курице добавляем перец и помидоры, накрываем крышкой и тушим пару минут.\n\nК курице и овощам добавляем томатную пасту, тушим еще около 5 минут\n\nОбжаренное куриное филе и овощи перекладываем в форму для запекания. \nВключаем духовку и разогреваем до 180 градусов.\n\nНа куриное филе сверху выкладываем кукурузу. Солим и перчим.\n\nФорму накрываем листом фольги и отправляем в духовку. Запекаем куриное филе с овощами в духовке 30 минут.\n\nКуриное филе, запеченное с помидорами, перцем и кукурузой, готово. Подаем блюдо, посыпав зеленью. \nПриятного аппетита!\n","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=150448","originalPicture":"","id":13},{"title":"Запечённый картофель, фаршированный курицей","description":"","preparationTime":"30 минут","cookingTime":"60 минут","inactiveTime":"","totalTime":"1 час 30 минут","quantity":"4","ingredients":"Картофель крупный - 4 шт. (общий вес - примерно 1 кг)\nФиле куриной грудки - 250 г\nЛук репчатый - 100 г\nПерец сладкий красный - 60 г\nСыр полутвёрдый - 100 г\nСоль - 1 ч. л.\nПерец чёрный молотый - 1/2 ч. л.\nМускатный орех - 1/2 ч. л.\nЧеснок - 2 зубчика\nМасло растительное - 2 ст. л.\nПетрушка свежая - 5 г\nЛук зелёный - 5 г","instructions":"Духовку включить и разогреть до 190°С. \nКартофель тщательно промыть и наколоть вилкой в 6-7 местах.\n\nЗавернуть картофель в фольгу и запечь в духовке при температуре 190°С в течение 1 часа, до готовности.\n\nЛук мелко нарезать.\n\nСладкий перец очистить от семян и нарезать мелкими кубиками.\n\nЧеснок измельчить ножом.\n\nКурицу нарезать кубиками.\n\nРазогреть сковороду с растительным маслом. Обжарить лук на среднем огне до прозрачности, в течение 2 минут.\n\nДобавить к луку перец и чеснок, продолжать жарить ещё 2 минуты.\n\nДобавить к овощам курицу и жарить до ее готовности, примерно 3-4 минуты. Добавить соль, перец и мускатный орех.\n\nГотовый картофель немного остудить и разрезать вдоль напополам.\n\nИз половинок картофелин аккуратно вынуть ложкой середину, чтобы получилась форма лодочки.\n\nВ сковороду с курицей и овощами добавить извлечённую мякоть картофеля. Перемешать.\n\nДобавить в начинку измельчённую зелень петрушки и выключить огонь.\n\nПолучившиеся картофельные лодочки выложить на противень, застеленный пекарской бумагой.\n\nНаполнить картофель подготовленной начинкой.\n\nСверху посыпать фаршированный картофель тёртым сыром.\n\nВ разогретую духовку до 190°С отправить противень с картофелем на 10-12 минут. Запечь картофель, фаршированный курицей, до лёгкой золотистой корочки.\n\nДостать запечённый картофель из духовки и посыпать рубленым зелёным луком.","notes":"","nutrition":"","favorite":false,"rating":"4.5","categories":"Курица;Гарнир","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=149562","originalPicture":"","id":14},{"title":"Земляничный коктейль","description":"","preparationTime":"5 минут","cookingTime":"5 минут","inactiveTime":"","totalTime":"10 минут","quantity":"2","ingredients":"Земляника  — 2 Стакана \nМолоко  — 2-3 Стаканов \nСахар  — 2 Ст. ложки \nМороженое  — 100 Грамм","instructions":"Земляничный коктейль готовится проще простого - даже ребенку под силу. Просто кладем все ингредиенты в чашу для блендера и измельчаем до консистенции молочного коктейля. По желанию, при подаче сверху можно украсить коктейль мороженым или целыми ягодами земляники. ","notes":"","nutrition":"","favorite":false,"rating":"3.5","categories":"Напитки","tags":"","video":"","source":"https://povar.ru/recipes/zemlyanichnyi_kokteil-8067.html","originalPicture":"","id":15},{"title":"КУРИНЫЕ КОТЛЕТЫ НА ПАРУ В МУЛЬТИВАРКЕ","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"40 минут","quantity":"","ingredients":"Куриное филе 550  гр\nЛук (небольшая луковица) 1  шт\nЯблоки (брать лучше зеленые сочные сорта) 2  шт\nМанка 1  ст л\nПаприка 1  ч л\nСоль по вкусу","instructions":"Как сделать куриные котлеты на пару в мультиварке? Подготовьте продукты. Куриное филе помойте и обсушите бумажным полотенцем.\n\nЯблоки очистите от кожуры и семечек. Выбирайте лучше твердые, зеленые, сочные плоды. Лук также очистите.\n\nФиле порежьте небольшими кусками. Прокрутите его через мясорубку или воспользуйтесь блендером-измельчителем. Я выбрала второе. Вместе с мясом измельчите лук и яблоки. Должна получиться однородная масса.\n\nДалее добавьте в массу манку, щепотку паприки (для цвета, чтобы котлетки не были очень бледными) и соль по вкусу.\n\nИ снова все хорошо перебейте.\n\nСформируйте котлеты. Куриный фарш всегда липкий, поэтому руки лучше смочить в воде и только тогда лепить котлеты. У меня получилось 8 штук. Выложите их в чашу-пароварку.\n\n\n\nСверху каждую котлетку присыпьте щедрой щепоткой паприки — готовое блюдо будет выглядеть красиво и ярко. В чашу мультиварки налейте 1 литр воды. Для ускорения процесса советую наливать кипяток. Установите корзину-пароварку в чашу и закройте крышку. Выберите режим, подходящий для варки на пару (он может по-разному называться, в зависимости от модели), выставите время 20 минут.\n\nПо истечении времени котлеты готовы.\n\nПодавайте котлеты с овощами или любым другим гарниром.\n","notes":"","nutrition":"","favorite":false,"rating":"3.5","categories":"Главные блюда;Курица;Индейка;В мультиварке;Диета 5 стола","tags":"","video":"","source":"https://1000.menu/cooking/26400-kurinye-kotlety-na-paru-v-multivarke","originalPicture":"","id":16},{"title":"Кабачки, фаршированные куриной грудкой","description":"","preparationTime":"30 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"1 час","quantity":"4","ingredients":"Кабачок  — 2 шт\nКуриная грудка  — 150 Грамм \nПерец сладкий  — 1 Штука \nЛук репчатый  — 1-2 Штук \nПомидор - 1 шт\nСоль  — По вкусу \nСыр твердый  — 70 Грамм \nСметана - 180 гр","instructions":"Кабачок разрежьте пополам вдоль, чайной ложкой удалите мякоть, чтобы получилась лодочка. Но слишком много мякоти не вынимайте, стенки должны получиться толщиной около 7-9 мм. \n\nПоложите лодочки из кабачка в духовку и запекайте при 180 градусах 15-20 минут, как раз пока будет готовиться начинка. \n\nЛук порежьте кубиком, отправьте  в сковороду с небольшим количеством растительного масла и жарьте, пока лук не станет прозрачным. \n\nКуриную грудку мелко порежьте ножом и добавьте в сковороду. Посолите по вкусу. \n\nСладкий перец очистите от семян и ополосните. Отправьте на сковороду\n\nПомидор нарежьте кубиками и добавьте к курице\n\nВсе перемешайте и добавьте сметаны. Тушите на медленном огне 15-20 минут до мягкости всех овощей и готовности курицы. \n\nКабачки выньте из духовки, наполните лодочки подготовленной курино-овощной начинкой. Сверху обильно присыпьте тертым сыром. \n\nЗапекайте кабачки в духовке при температуре 180 градусов 10-20 минут, пока не растопится сыр.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Гарнир","tags":"","video":"","source":"https://povar.ru/recipes/kabachki_farshirovannye_kurinoi_grudkoi-60266.html","originalPicture":"","id":17},{"title":"Картофель фри в духовке","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"4 средних картофелины\nСпеции (паприка, сушеный чеснок, базилик) - по 1 чайной ложке\nСоль, перец\n1,5 ст ложки масла","instructions":"Картофель нарезать брусочками, замочить в воде 1 час\nХорошо просушить, добавить муку, соль, специи, масло, перемешать\nКартофель распределить по бумаге для запекания так, чтобы брусочки не соприкасались\nВыпекать при 210 около 25 минут","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Гарнир","tags":"","video":"","source":"","originalPicture":"","id":18},{"title":"Картофельная запеканка с форелью и брокколи","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Основные\nфорель 300 г\nброкколи свежая 300 г\nкартофель 4 шт.\nсливки 150 мл\nяйца куриные 3 шт.\nсыр твердый 80 г\nмускатный орех молотый 1 щепотка\n","instructions":"Сварить брокколи в подсоленой воде в течение 3 минут.\n\nКартофель варить 15 минут, нарезать кружочками, выложеить на противень. Филе рыбы нарезать крупными кусочками, выложить на картофель.\n\nЯйца взбить венчиком со сливками. Посолить, поперчить, добавить мускатный орех.\n\nВыложить в форму брокколи, залить сливочной смесью.\n\nЗапекаем в духовом шкафу при 200°С около 20–25 минут. За 5 минут до готовности посыпать тертым сыром.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"","tags":"","video":"","source":"https://www.edimdoma.ru/retsepty/68118-zapekanka-s-forelyu-i-brokkoli","originalPicture":"","id":19},{"title":"Картофельный суп","description":"","preparationTime":"10 минут","cookingTime":"45 минут","inactiveTime":"","totalTime":"45 минут","quantity":"4","ingredients":"Луковица - 1 шт\nМорковка - 1 шт\nКартофель - 2 шт\nМакарошки\nСоль по вкусу","instructions":"Приготовить овощной бульон - в кипящую воду (1 литр) положить луковицу, варить 15 минут\nКартофель нарезать кубиками, морковь колечками или полукольцами\nВытащить луковицу. Добавить в бульон картофель и морковь, посолить по вкусу. Варить 20 минут\nДобавить макарошки и варить еще 10 минут","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Супы;Диета 5 стола","tags":"","video":"","source":"Мой рецепт","originalPicture":"","id":20},{"title":"Картофельный суп-пюре","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"40 минут","quantity":"","ingredients":"Вода - 1,5 л\nКартофель - 0,5 кг\nМорковь - 300 г\nЛук - 2 шт.\nМасло сливочное - 40 г\nЗелень петрушки - 1 пучок\nПерец черный молотый - на кончике ножа (по вкусу)\nСоль - 1 ч. ложка (по вкусу)","instructions":"Картофель очистить, вымыть, нарезать соломкой.\n\nКартофель залить холодной водой, довести до кипения.\n\nКартофель варить в течение 15-20 минут на небольшом огне под крышкой.\n\nЛук очистить, вымыть, измельчить.\n\nМорковь очистить, вымыть, измельчить на крупной терке.\n\nЗелень помыть, мелко порубить.\n\nРастопить на сковороде сливочное масло. В горячее масло выложить лук и морковь. Овощи поджа­рить на растопленном сливочном масле на среднем огне, помешивая, до мягкости (2-3 минуты). Посолить.\n\nСуп посолить и поперчить, добавить обжаренные морковь и лук.\n\nВарить на небольшом огне под крышкой еще 7-10 минут.\n\nПротереть суп через сито или измельчить блендером.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=75967","originalPicture":"","id":21},{"title":"Картофельный суп-пюре с тыквой","description":"","preparationTime":"15 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Картофель (очищенный) - 450 г\nТыква (замороженная) - 120 г\nМорковь (очищенная) - 50 г\nВода - 500 мл\nСоль - по вкусу\nПряности - по вкусу\nИмбирь свежий - 7 г\nМасло растительное - 1 ст.л.","instructions":"В кастрюлю положите нарезанный некрупными кусочками картофель, морковь и тыкву (можно не размораживать). Залейте кипящей водой, добавьте соль, поставьте на огонь и после закипания варите на минимальном огне 20-30 минут (зависит от сорта картофеля).\n\nКогда вода закипит, добавить соль и перец\n\nГотовые овощи измельчите при помощи блендера в пюре.\n\nПодавайте готовый картофельный суп-пюре с тыквой в горячем виде. Дополнить блюдо можно сметаной, сливками, сухариками, тертым сыром, свежей зеленью.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Супы;Диета 5 стола","tags":"","video":"","source":"https://www.iamcook.ru/showrecipe/14819","originalPicture":"","id":22},{"title":"Каша гречневая","description":"","preparationTime":"10 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"40 минут","quantity":"","ingredients":"Продукты (на 2 порции)\nКрупа гречневая - 1 стакан\nВода - 2 стакана\nМасло растительное - 1 ст. ложка\nили масло сливочное - 1 ст. ложка\nСоль - по вкусу","instructions":"Как приготовить гречневую кашу:\n\nГречку тщательно перебрать.\n\nКрупу хорошо промыть. Вскипятить чайник.\n\nГречку посолить, добавить растительное (или сливочное) масло.\n\nЗалить крупу кипятком, на большом огне дать закипеть.\n\nУменьшить огонь до самого маленького, накрыть кастрюлю (казан) с кашей крышкой, варить гречку 20-30 минут.\n\nКаша гречневая простая готова.\n\nПодавать гречневую кашу горячей.\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Гарнир","tags":"","video":"","source":"","originalPicture":"","id":23},{"title":"Киш","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Тесто:\n225 г муки\n150 г охлажденного сливочного масла\n1 яйцо\n\nЗаливка:\n50 г твердого сыра\n2 яйца\n200 мл сливок\nсоль, перец\n\nНачинка:\nЛюбые овощи\nКурица - 1 кусочек","instructions":"1. Охлажденное сливочное масло порезать кубиками.\n\n2. Просеять муку в миску.\n\n3. Яйцо слегка взбить и добавить в миску с тестом. Кончиками пальцев растереть или порубить ножом муку с маслом и яйцом в мелкие крошки. \n\n4. Затем руками быстро сформировать из массы мягкий, но не клейкий шар. Обернуть тесто пищевой пленкой и поставить в холодильник на 20-30 минут.\n\n5. Раскатать тесто, чтобы оно получилось толщиной примерно 3 мм и диаметром как минимум на 5 см больше, чем форма. Накатать тесто на скалку и перенести на форму. Бортики сделать повыше, так как изделие немного сожмется в процессе выпекания. Наколоть донышко вилкой и выпекать 20 минут при температуре 200 градусов.\n\n6. Для заливки натереть сыр и смешать с яйцами.\n\n7. Залить яичную смесь сливками, посолить, поперчить и перемешать.\n\n8. На дно формы из теста выложить начинку. Это может быть что угодно, например курица и сметана.\n\n12. На начинку равномерно вылить заливку. Выпекать в духовке 30 минут при температуре 180 градусов.\n\n13. Через 15 минут после начала выпечки можно выложить на пирог брокколи и помидоры черри, нарезанные кольцами.\n\n14. Киш с семгой полностью остудить и подавать на стол.\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Выпечка;Холодные закуски","tags":"","video":"","source":"https://yummybook.ru/recept/kish-s-semgoj","originalPicture":"","id":24},{"title":"Клубничный пирог","description":"","preparationTime":"30 минут","cookingTime":"45 минут","inactiveTime":"","totalTime":"1 час 15 минут","quantity":"","ingredients":"Клубника - 400-500 г\nСметана - 250 г\nЯйца - 3 шт.\nМасло растительное без запаха - 50 мл (можно заменить сливочным)\nСахар - 120 г\nСахар ванильный - 20 г\nМука - 250 г\nРазрыхлитель - 2 ч. ложки\nСоль - 1 щепотка\nСахарная пудра (для украшения, по желанию) - 1 ч. ложка","instructions":"Яйца взбить миксером. Добавить щепотку соли.\n\nПродолжая взбивать, постепенно ввести сахар.\nДобавить ванильный сахар и продолжить взбивать яйца с сахаром до белой пышной массы, примерно 5 минут.\n\nДобавить сметану и масло. Взбить на средней скорости миксера до однородности.\n\nМуку просеять и смешать с разрыхлителем.\n\nПросеянную муку с разрыхлителем постепенно ввести в яично-сметанную массу, перемешивая тесто на малых оборотах миксера.\n\nПоловину клубники нарезать мелко - кубиками или четвертинками. Оставшуюся половину клубники разрезать пополам.\nВключить и разогреть духовку.\n\nДно разъёмной формы для выпечки (диаметр формы 22 см) выстелить пергаментом. \nВылить половину теста в форму. Высыпать мелко нарезанную клубнику, равномерно распределяя по всей поверхности.\n\nСверху вылить оставшееся тесто, разровнять. \nВыложить половинки клубники, немного утапливая их в тесто.\n\nВыпекать пирог с клубникой в разогретой духовке 50 минут при температуре 180-190 градусов.\nПеред тем как доставать готовый клубничный пирог из формы, дать ему остыть 15-20 минут. При остывании пирог немного осядет. \nПройтись по краям формы ножом и снять разъёмное кольцо.\n\nДля приготовления клубничного соуса в чашу блендера отправить клубнику и сахар или мёд по вкусу (количество зависит от сладости клубники). Взбить до однородности.\n\nОстывший пирог с клубникой при желании посыпать сахарной пудрой.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Десерты","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=151030","originalPicture":"","id":25},{"title":"Кокосовая творожная запеканка","description":"","preparationTime":"30 минут","cookingTime":"50 минут","inactiveTime":"","totalTime":"1,5 часа","quantity":"","ingredients":"Ингредиенты:\n- творог 1,8% - 360 г (две пачки);\n- натуральный йогурт 1,5% - 200 г;\n- яйцо куриное – 2 шт.;\n- рисовая мука – 20 г;\n- кокосовая стружка – 15 г;\n- сахар сахарозаменитель – по вкусу (50 г получилось в самый раз)\n- ванилин – 15 г (один пакетик).","instructions":"Способ приготовления:\n\nОтделить желтки от белков.\n\nТщательно смешать все ингредиенты, кроме белков.\n\nБелки взбить до крепких пиков и осторожно добавить к творожной массе.\n\nФорму для запекания смазать каплей масла, вылить тесто в форму.\n\nГотовить в мультиварке, в режиме «Выпечка». Время приготовления - 50 минут","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Выпечка;Правильное питание;Десерты;В мультиварке","tags":"","video":"","source":"https://bodymaster.ru/food/menyu-belkovoj-dietyi","originalPicture":"","id":26},{"title":"Компот из клюквы","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Клюква  — 300 Грамм (замороженная) \nСахар  — 200 Грамм \nВода  — 2 Литра","instructions":"Подготовьте все необходимые ингредиенты. Ягоды размораживать предварительно не нужно. Воду нагрейте, после закипания засыпьте сахар и, помешивая, растворите. Затем добавьте клюкву. После закипания убавьте огонь и варите под крышкой 5 минут. Настоятельно рекомендую именно под крышкой, т.к. ягоды начинают лопаться и брызгать сок во все стороны. Готовому компоту дайте настояться и остынуть не менее 30 минут. Затем процедите в удобные емкости и храните в холодильнике или в другом прохладном месте","notes":"","nutrition":"","favorite":false,"rating":"4.0","categories":"Напитки","tags":"","video":"","source":"https://povar.ru/recipes/kompot_iz_zamorojennoi_kliukvy-74079.html","originalPicture":"","id":27},{"title":"Компот из свежих яблок","description":"","preparationTime":"15 минут","cookingTime":"15 минут","inactiveTime":"","totalTime":"30 минут","quantity":"","ingredients":"Яблоко\n(450 граммов)\nВода\n(2 литра)\nСахар\n(0.5 стакана","instructions":"Ставим на огонь кастрюлю с водой. Пока она греется, моем яблоки. Разрезаем каждый плод (у меня 3 штуки) на 8 частей, удаляем сердцевину и хвостик.\n\nВ кипящую воду кладем яблочные дольки и варим пару минут.\n\nЗатем всыпаем сахарный песок. Все это делаем, не снимая кастрюлю с плиты (я снимала, чтобы сделать фото). Перемешиваем до полного растворения крупиц. Пробуем компот на сладость, корректируем, если надо.\n\nВарить компот из свежих яблок нужно еще 5 минут - чтобы дольки не развалились и в то же время были мягкими. Выключаем огонь, нарываем кастрюлю крышкой - компот из яблок готов. Его можно пить в горячем, теплом и","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Напитки","tags":"","video":"","source":"https://finecooking.ru/recipe/jablochnyj-kompot-iz-svezhih-jablok","originalPicture":"","id":28},{"title":"Куриная грудка в сливках","description":"","preparationTime":"10 минут","cookingTime":"30 минут","inactiveTime":"10 минут","totalTime":"60 минут","quantity":"","ingredients":"Куриное филе - 4 шт.\nЗеленый лук - 4 шт.\nСливки 10% - 200 мл\nМука - 1 ст. л.\nЧеснок гранулированный - 1,5 ч. л.\nСоль - 1 ч. л.\nПерец черный молотый - ½ ч. л.\n","instructions":"Смешать чеснок, соль и перец.\nПриправить грудки, выложить их в антипригарную форму и оставить на 10 минут.\n\nРазвести муку в небольшом количестве сливок.\n\nЗатем влить оставшиеся сливки и добавить мелко нарезанный лук.\n\nОтправить форму в заранее разогретую до 180 градусов духовку и запекать куриную грудку в сливках в духовке 10 минут.\n\nЗатем полить грудку приготовленным соусом и запекать еще 20 минут.\n\nГотовую грудку нарезать крупными кусочками и ","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=131592","originalPicture":"","id":29},{"title":"Куриная грудка с апельсинами","description":"","preparationTime":"20 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"3","ingredients":"куриная грудка 2 шт.\n\nапельсин 1 шт.\n\nСметана 150 г\n\nсоль по вкусу\n\nсоус соевый 1 ст. ложки\n\nсмесь перцев по вкусу\n\nпаприка молотая по вкусу\n\nлавровый лист 1 шт.\n\nтмин по вкусу\n\nтравы итальянские сушёные (орегано, чабер, чеснок)по вкусу\n\n","instructions":"Подготавливаем ингредиенты для приготовления куриной грудки с апельсинами.\n\n\nНарезаем куриную грудку небольшими кусочками.\n\n\nОтправляем грудку в сковородку, сотейник или чашу мультиварки. Посыпаем специями и обминаем руками.\n\n\nДобавляем сливочное и подсолнечное масло. Обжариваем грудку 15 минут в режиме \"Жарка\", если вы готовите в мультиварке.\n\n\nТем временем выжимаем сок апельсина.\n\n\nДобавляем к куриному филе майонез. (Можно готовить со сметаной, но будет чуть с кислинкой.)\n\n\nВливаем сок апельсина и перемешиваем. Изменяем режим на \"Тушение\" и готовим куриное филе в мультиварке 20 минут. (Если готовите на сковороде, уменьшите огонь.)\n\n\nЧерез 10 минут добавляем 1 ст. ложку соевого соуса и продолжаем тушить куриное филе в апельсиновом соусе.\n\n\nКуриная грудка с апельсинами (в мультиварке) готова!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=137464","originalPicture":"","id":30},{"title":"Куриное филе под сыром в мультиварке","description":"","preparationTime":"30 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час 10 минут","quantity":"","ingredients":"500 г. куриного филе\n1 маленькая луковица\n1 морковь\nрастительное масло\n3 зубка чеснока\n120 г. твёрдого сыра\n3 ст.л. майонеза (сметаны)\nсоль, перец, приправы по вкусу\nзелень","instructions":"\n1. Куриное филе промыть и нарезать кубиками. Посыпать мясо солью, перцем, приправами и перемешать. Оставить на 15-20 минут.\n2. В чашу мультиварки налить немного растительного масла, переложить в неё филе и жарить в режиме Жарка/Выпечка 10-15 минут.\n3. Лук нарезать, морковь натереть и выложить на поджаренное мясо. Смазать овощи майонезом смешанным с измельченным чесноком (я заменила на сметану).\nВключить режим \"Тушение\" минут на 20 или пока овощи не станут мягкими.\n4. Сыр натереть на тёрке и перемешать с мелко нарубленной зеленью. \nОбильно посыпать сыром майонезный слой.\n5. Запекать минут 10 или до расплавления сыра и полного испарения жидкости.\n6. Курица под сыром в мультиварке готова. Подавать можно к любому гарниру или к овощам.\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Курица;В мультиварке","tags":"","video":"","source":"https://yummybook.ru/recept/kurinoe-file-pod-syrom-v-multivarke?mode=print","originalPicture":"","id":31},{"title":"Куриное филе, запеченное с брокколи, под сырным соусом","description":"","preparationTime":"2 часа","cookingTime":"40 минут","inactiveTime":"","totalTime":"2 часа 40 минут","quantity":"4","ingredients":"капуста брокколи 300 г\nкуриная грудка 250 г\nсметана 100 мл\nсливки (15-20%)200 мл\nсыр твёрдый 150 г\nсоль по вкусу\nперец чёрный молотый по вкусу","instructions":"Предварительно маринуем куриное филе.\n\nНарезаем филе некрупными кусочками.\n\nЗаливаем сметаной, солим и перчим. Перемешиваем и ставим в холодильник на 2 часа или на ночь.\n\nПодготавливаем остальные ингредиенты.\nВключаем духовку разогреваться до 180 градусов.\n\nСыр натираем на крупной терке и смешиваем со сливками, оставив немного сыра для посыпания.\n\nБрокколи отвариваем, предварительно не размораживая, в течение 3 минут. Откидываем на дуршлаг, чтобы стекла лишняя жидкость. Разрезать соцветия на несколько частей\n\nВ форму для запекания выкладываем куриное филе и брокколи. Слегка солим и перчим.\n\nСверху заливаем сыром со сливками. Посыпаем сыром.\nОтправляем в духовку запекаться на 30 минут.\n\nКуриное филе, запеченное с брокколи, под сырным соусом, готово.\n\nПриятного вам аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=153887","originalPicture":"","id":32},{"title":"Куриные грудки с овощами","description":"","preparationTime":"30","cookingTime":"40","inactiveTime":"","totalTime":"1.10","quantity":"4","ingredients":"Куриное филе - 500 г\nКартофель - 800 г\nМорковь - 1 шт.\nЛук - 1 шт.\nПерец сладкий - 1 шт.\nПомидоры черри - 4 шт.\nСпеции для курицы - 1/2 ч.л.\nМасло оливковое - 2-3 ст.л.\nСоль - по вкусу","instructions":"Куриное филе нарезаем небольшими кусочками, солим и добавляем специи для курицы.\nФото приготовления рецепта: Куриные грудки с овощами - шаг №2\nКартофель нарезаем брусочками, выкладываем на противень для запекания, оставив центр свободным. Солим и сбрызгиваем оливковым маслом.\nФото приготовления рецепта: Куриные грудки с овощами - шаг №3\nЛук нарезаем полукольцами и выкладываем в центр противня.\nФото приготовления рецепта: Куриные грудки с овощами - шаг №4\nСверху на лук выкладываем куриное филе.\nФото приготовления рецепта: Куриные грудки с овощами - шаг №5\nПроизвольно нарезаем морковь, перец и помидоры - добавляем в форму.\nФото приготовления рецепта: Куриные грудки с овощами - шаг №6\nЗаворачиваем в фольгу, ставим курицу с овощами в духовку, разогретую до 200 градусов, на 35-40 минут.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Курица","tags":"","video":"","source":"","originalPicture":"","id":33},{"title":"Куриные маффины с творогом и сыром","description":"","preparationTime":"25 минут","cookingTime":"35 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"500 г куриного филе (или фарша)\n1 луковица\n1 яйцо\nсоль, перец по вкусу\nсухой чеснок по вкусу\n100 г. твёрдого сыра\n\nДля начинки:\n150 г. творога\n100 г. плавленого сыра\nсоль, перец по вкусу","instructions":"1. Куриное филе перемолоть с луком в мясорубке или в блендере.\n\n2. Добавить соль, перец, яйцо и сухой чеснок.\n\n3. Добавить натёртый на средней тёрке сыр. Перемешать.\n\n4. В отдельной миске соединить творог и натёртый на тёрке плавленый сыр. Добавить соль и перец по вкусу.\nСовет\nПлавленый сыр можно брать с добавками грибов, бекона или зелени.\n\n5. Небольшие порции фарша вложить в формы для кексов и пальцами распределить его по дну и бокам формочки.\n\n6. Наполнить кексы сырно-творожной начинкой.\n\n7. Если формочек у вас нет, то можно сформировать фарш в виде ватрушек или котлет с сырно-творожной начинкой.\n\n8. Выпекать в заранее разогретой духовке при температуре 180 градусов 30-35 минут.\n\n9. Подавать с гарниром или овощами. Приятного аппетита!\n","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Главные блюда;Курица;Диета 5 стола","tags":"","video":"","source":"https://yummybook.ru/recept/kurinye-maffiny-s-tvorogom-i-syrom","originalPicture":"","id":34},{"title":"Куриный суп с вермешелью","description":"","preparationTime":"15 минут","cookingTime":"45 минут","inactiveTime":"","totalTime":"60 минут","quantity":"4","ingredients":"Куриная грудка - 500 г\nВода - 2,5 л\nЛук репчатый - 1 шт.\nКартофель - 2 шт.\nМорковь - 1 шт.\nВермишель - 100 г\nЗелень петрушки - по вкусу (2-3 веточки)\nЗелень укропа - по вкусу (2-3 веточки)\nСоль - по вкусу","instructions":"Куриное филе заливаем холодной водой. На сильном огне доводим почти до кипения. Снимаем пенку. Добавляем соль. Кладём целую луковицу. Варим с момента закипания 30 минут. \nМорковь натираем на крупной тёрке.\n\nКартофель нарезаем брусочками.\n\nКуриное мясо сварилось, бульон готов. Грудку я вынимаю, она мне пригодится для салата.\n\nОтправляем в бульон картофель и морковь. Варим до готовности картофеля. (На этом этапе можно нарезать кусочками отварное куриное филе и добавить его в суп вслед за картофелем.)\nПробуем суп с овощами на соль, если нужно подсаливаем.\n\nДобавляем вермишель, перемешиваем и варим вермишелевый суп 5 минут. \nМелко нарезаем зелень.\n\nДобавляем в суп с вермишелью и картофелем рубленую зелень. Накрываем кастрюлю крышкой, даём супу настояться минут 5-10 и можно накрывать на стол.","notes":"","nutrition":"","favorite":true,"rating":"5.0","categories":"Супы;Курица;Диета 5 стола","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=145744","originalPicture":"","id":35},{"title":"Курица Су-вид","description":"","preparationTime":"30 минут","cookingTime":"1 час 30 минут","inactiveTime":"","totalTime":"120","quantity":"","ingredients":"Куриная грудка (филе)\n700 г\n\nсоль \nпо вкусу\n\nперец чёрный молотый \nпо вкусу\n\n","instructions":"\nПодготовить куриную грудку и специи. \nКроме этого понадобятся пакеты со специальной застежкой \"зип-лок\". Это удобно. Но можно обойтись и простыми пищевыми пакетами, главное чтобы они были целые.\nПо методу су-вид продукт помещается в воду в вакуумной упаковке, где готовится при небольшой постоянной температуре. Это позволяет готовить блюда деликатно, ведь температура в середине и на поверхности продукта будет одинаковой.\nКуриную грудку хорошо вымыть и обсушить. Куриное мясо посолить и поперчить по вкусу. (Можно использовать любимую приправу для птицы.) Оставить на некоторое время просолиться.\nПоместить куриную грудку в пакет и постараться \"выдавить\" максимальное количество воздуха из него. Для этого можно опустить пакет в ёмкость с водой так, чтобы над водой оставался только верх пакета с застежкой. Вода выдавит воздух из пакета. Останется только аккуратно закрыть застёжку. Если останется немного воздуха, то ничего страшного не случится.\nВ чашу мультиварки налить теплую (не кипяток!) воду и опустить в неё пакет с куриными грудками. На фото видно, что остатки воздуха поднялись наверх, а мясо опустилось.\nМультиварку перевести в ручной режим и выставить температуру 70 градусов.\nВыставить время 1 час. Закрыть крышку и включить мультиварку в рабочий режим.\nПо истечении часа (после сигнала мультиварки) открыть крышку и извлечь пакет с куриной грудкой.","notes":"","nutrition":"","favorite":false,"rating":"3.5","categories":"Главные блюда;Курица","tags":"","video":"","source":"","originalPicture":"","id":36},{"title":"Курица карри в молоке","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"40 минут","quantity":"3","ingredients":"Грудка куриная — 500 г\nЛук репчатый — 2 шт\nМолоко — 1,5 стак.\nПерец черный — 0.5 ч. л.\nМасло растительное — 3 ст. л.\nМука пшеничная / Мука — 1 ст. л.\nСоль (по вкусу) — 1 ч. л.\nКарри (приправа) — 1,5 ч. л.\nЧеснок (небольшых) — 3 зуб.","instructions":"Лук нашинковать полукольцами и бросить на разогретую сковороду с растительным маслом, жарим 5 мин.\n \nЧерез пять мин. добавляем порезанную кубиками куриную грудку. Жарим на среднем огне 15 мин.\n \nДобавляем соль, перец и карри. Я в ингредиентах написала примерные пропорции. Но думаю это дело вкуса каждого. Жарим еще 5 мин.\n \nПосыпаем курочку столовой ложкой с горкой муки и перемешиваем, жарим еще 3 мин.\n \nВливаем молоко, пробуем по вкусу на соль и перец, накрываем крышкой и тушим на медленном огне еще 10 мин, периодически помешивая, так как соус с мукой может пригорать.\n \nВ конце тушения высыпаем мелко порезанный чеснок, тушим 2 мин и выключаем.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Курица","tags":"","video":"","source":"https://www.povarenok.ru/recipes/show/125712/","originalPicture":"","id":37},{"title":"Курица карри с рисом","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"4","ingredients":"Куриное филе 500 г\nСливки 10%-ные 200 мл\nЛук 100 г\nКрасный карри порошок 2 чайные ложки\nСоль по вкусу\nОливковое масло 1 столовая ложка","instructions":"Куриное филе нарезать брусочками.\n\nЛук почистить, нарезать мелко.\n\nНа сковороду налить растительное масло, разогреть на большом огне.  Выложить филе, жарить при активном перемешивании, до момента, пока все кусочки не побелеют.\n\nДобавить лук, перемешать, жарить еще 2–3 минуты.\n\nНемного посолить, посыпать карри.  Влить сливки, перемешать, довести до кипения.\n\nТушить на маленьком огне без крышки в течение 20 минут.\n\nСоус должен немного загустеть.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Главные блюда;Курица;Индейка","tags":"","video":"","source":"https://eda.ru/recepty/osnovnye-blyuda/kurica-karri-s-risom-39781","originalPicture":"","id":38},{"title":"Курица по тайски","description":"","preparationTime":"","cookingTime":"25 минут","inactiveTime":"","totalTime":"25","quantity":"","ingredients":"Сладкий перец 2 штуки\nКуриное филе 600 г\nЛук репчатый 1 штука\nЧеснок 3 зубчика\nСоевый соус 4 столовые ложки\nМед 1 столовая ложка\nКарри 2 столовые ложки\nПшеничная мука 1 столовая ложка\nПерец черный молотый ¼ чайной ложки","instructions":"1. Филе курицы нарезаем полосками. Обжариваем в растительном масле до полуготовности.  \n  2. Выкладываем из сковороды. Если остается бульон, сливаем его в отдельную миску. \n 3. Перец нарезаем полосками, лук — полукольцами. Обжариваем овощи в той же сковороде, что и филе, около 5–7 минут.  \n  4. Готовим соус. Измельчаем чеснок. Соединяем соевый соус, чеснок, мед, карри, перец и муку.  \n  5. Добавляем к овощам филе, вливаем соус, а также оставшийся бульон. Если бульона нет, вливаем чуть меньше стакана воды. \n 6. Доводим до кипения и тушим минут 10 до загустения.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Курица","tags":"","video":"","source":"https://eda.ru/recepty/osnovnye-blyuda/kurica-po-tajski-47631","originalPicture":"","id":39},{"title":"Курица по тайски","description":"","preparationTime":"20 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"50 минут","quantity":"6","ingredients":"\nКуриное филе 900 граммов\nЛук порей 1 стебель\nПерец красный сладкий 2 шт\nЧеснок 4 зубчика\nМасло растительное для жарки\nМасло кунжутное для подачи\nСоевый соус 100 мл\nПерец кайенский 1 ст.л\nМолотая паприка 1 ст.л\nПерец сычуанский 1 ч.л\nАнанасы консервированные 1 банка\nКунжутные семечки для подачи\nПерец чили для подачи\nРис для подачи\n","instructions":"1. Филе куриной грудки помыть, обсушить, разделать тонкой соломкой.\n2. В глубоком сотейнике или воке нагреть небольшое количество растительного масла без запаха, обжарить куриное филе на интенсивном огне в течение 3-5 минут. Допускается лёгкий румянец. Готовую курицу отложить на отдельную тарелку.\n3. Порей, сладкий перец и чеснок разделать соломкой. Обжарить овощи в сотейнике или воке, где готовилось куриное филе. Жарить не более 5 минут - овощи должны быть хрусткими.\n4. В пряным овощам добавить консервированные кусочки ананаса, влить соевый соус и ананасовый сок или сироп - соус посолить, если требуется, приправить сахаром, кайенским и сычуаньским перцем, молотой паприкой. Сычуаньский перец можно заменить звёздочкой аниса. Готовить соус 3-5 минут.\n5. В готовый кисло-сладкий соус добавить подготовленные ломтики куриного филе - довести до кипения и тут же убрать с плиты.\nДля гарнира отварить рис сорта Жасмин. При подаче курицу по-тайски полить кунжутным маслом, посыпать обжаренным кунжутом и рубленным зелёным луком.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Правильное питание;Главные блюда;Курица","tags":"","video":"","source":"https://tvoirecepty.ru/recept/kuritsa-po-taiski#id=142080","originalPicture":"","id":40},{"title":"Курица по-гречески","description":"","preparationTime":"15 минут","cookingTime":"45 минут","inactiveTime":"30 минут","totalTime":"1,5 часа","quantity":"","ingredients":"Йогурт без ароматизаторов — 1 стакан\nКурица (ножки, крылышки, пульки) — 2 кг\nЛимон — 1 шт\nОливковое масло — 2 ст. л.\nОрегано сушеный — ½ ст. л.\nПерец черный молотый — по вкусу\nПетрушка свежая — ¼ пучка\nСоль — ½ ч. л.\nЧеснок — 2 зубчика","instructions":"Приготовление:\nСмешайте йогурт, оливковое масло, давленый чеснок, орегано, соль и черный перец. Добавьте лимонную цедру (натрите ее на мелкую терку) и сок половины лимона (примерно 2 столовые ложки).\n \nТщательно перемешайте, а затем добавьте нарезанную петрушку. Маринад готов.\n\nПоместите куриное мясо вместе с маринадом в большой пакет и закройте его, не оставляя в нем воздуха. Помассируйте пакет, чтобы хорошо перемешать маринад и мясо, и отправьте его в холодильник на 30 минут.\n\nЗамаринованную курицу можно поджарить в сковороде или на гриле, а также запечь в духовке. Для последнего варианта разогрейте духовку до 190 C, поместите курицу в глубокий противень и отправьте в духовку на 45–60 минут или пока курица не станет золотисто-коричневой.","notes":"","nutrition":"","favorite":false,"rating":"4.5","categories":"Главные блюда;Курица","tags":"","video":"","source":"http://flip.it/RRpQN5","originalPicture":"","id":41},{"title":"Курица по-тайски","description":"","preparationTime":"10 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"40 минут","quantity":"","ingredients":"филе куриной грудки – 0,5 кг;\nголовки лука – 2 шт.;\n1 шт. болгарского перца;\nсоевый соус – 50 мл;\nмед – 15 гр.;\nкарри молотый – 2 ч. л.;\nзубки чеснока – 2 шт.;\nмука пшеничная – 1 ст. л.;\nперец молотый – 0,5 ч. л.;\n20 мл подсолнечного масла.","instructions":"1. Заранее подготовьте продукты. Сполосните, очистите.\n2. Филе нарежьте полосками, не мелко. Головку репчатого и перец искрошите соломкой.\n3. Отдельно смешайте мед, соевый соус. Добавьте карри, муку, молотый перец. Пропустите чеснок через пресс. Перемешайте до однородности.\n4. На сковороде прогрейте масло. Выложите курицу. Жарьте куски с каждой стороны по 2-3 минуты. Переложите в тарелку.\n5. В сковороду вывалите овощную нарезку. Жарьте 2-3 минуты, помешивая.\n6. Добавьте к луку курицу, соус. Перемешайте. Тушите под крышкой 10 минут.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Курица","tags":"","video":"","source":"","originalPicture":"","id":42},{"title":"Курица с брокколи в сливочном соусе","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"30 минут","quantity":"","ingredients":"Ингредиенты\nКапуста брокколи 300 г\nКуриное филе 350 г\nЛук репчатый 70 г\nМасло подсолнечное рафинированное 4 ст. л.\nПерец чёрный молотый 0.2 ч. л.\nСливки 10% 250 мл\nСоль 1 ч. л.\nСыр Голландский 35 г","instructions":"Куриное филе (350 г) порезать небольшими кусочками. Приправить кусочки филе солью (1 ч. л.) и чёрным молотым перцем (0,2 ч. л.). Перемешать и оставить на 5 минут.\n\nВ сковороде разогреть подсолнечное масло (4 ст. л.) и обжарить в нём, помешивая, подготовленные кусочки филе до побеления (приблизительно 5 минут). Вынуть филе и выложить на блюдо.\n\nВ том же масле обжарить репчатый лук (70 г), нарезанный тонкими полукольцами.\n\nВернуть в сковороду к луку куриное филе. Брокколи (300 г) промыть, очистить, разделить на соцветия и удалить толстые «ножки». Выложить соцветия брокколи в сковороду. Добавить сливки (250 мл). Перемешать.\n\nУбавить огонь и тушить до желаемой степени готовности брокколи (примерно 10-13 минут).\n\nПеред подачей блюдо посыпать тёртым сыром (35 г).","notes":"","nutrition":"","favorite":false,"rating":"","categories":"","tags":"","video":"","source":"","originalPicture":"","id":43},{"title":"Курица с грибами в сливочном соусе","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"30 минут","quantity":"","ingredients":"Грудка курицы 2 шт.\nШампиньоны свежие 400 г\nСливки 22% жирности 300 мл\nСливочное масло 40 г\nСпеции по вкусу\nCоль по вкусу","instructions":"Выложите шампиньоны на дуршлаг, ополосните, дайте лишней жидкости стечь.\n\nНарежьте грибы крупными дольками, обжарьте на разогретом сливочном масле, на среднем огне в течение 5 минут. Не забывайте время от времени помешивать грибы, чтобы они не подгорели и приобрели золотистый цвет со всех сторон.\n\nГрудки ополосните, снимите кожицу, обрежьте пленку, отделите мясо от костей. Нарежьте филе небольшими кубиками, стороной не более 2 см. Добавьте курицу к уже прожаренным грибочкам, перемешайте. Жарьте оба ингредиента в течение 3-5 минут, пока мясо курицы не станет белым.\n\nВлейте сливки, посолите по вкусу, положите любимые специи. Тушите курицу в сливочном соусе 5-8 минут, не допуская закипания сливок. Блюдо должно томиться на медленном огне, а не бурлить и кипеть.\n\nКак только нежный соус загустеет, снимайте сковороду с огня","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Курица","tags":"","video":"","source":"","originalPicture":"","id":44},{"title":"Курица с овощами, в медово-горчичном соусе","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Куриное филе - 2 шт.\nКартофель (молодой) - 200 г\nБрокколи - 200 г\n*\nДля соуса:\nМасло оливковое - 1,5 ст.л.\nМед - 1 ст.л.\nГорчица дижонская - 0,5 ст.л.\nМасло сливочное - 1 ст.л.\nСахар коричневый - 0,5 ст.л.\nЧеснок - 1 зубчик\nБазилик сушеный - 1 щепотка\nОрегано сушеный - 1 щепотка\nСоль - по вкусу\nПерец черный молотый - по вкусу\n","instructions":"Молодой картофель хорошо почистить щеткой и вымыть под проточной водой. Разрезать мелкий картофель напополам, картофель покрупнее - на 4-8 частей. Выложить в форму для запекания нарезанный картофель.\n\nКаждое куриное филе разрезать пополам. Выложить мясо поверх картофеля в форму.\n\nВ миске смешать мед, горчицу, оливковое масло, растопленное сливочное масло, коричневый сахар, сушеные базилик и орегано.\n\nЧеснок очистить и мелко порубить ножом. Добавить чеснок в миску к остальным ингредиентам соуса. Соус перемешать, добавить соль и черный молотый перец по вкусу.\n\nПри помощи кулинарной кисти смазать мясо и картофель полученным соусом. Отправить курицу в медово-горчичном соусе в разогретую до 190 градусов духовку на 35 минут.\n\nБрокколи разобрать на соцветия. Отварить брокколи в кипящей воде буквально 2 минуты. Слить с брокколи воду.\n\nДостать форму с курицей и картофелем из духовки. Выложить в форму соцветия брокколи и отправить блюдо ","notes":"","nutrition":"","favorite":false,"rating":"4.0","categories":"Главные блюда;Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=145902","originalPicture":"","id":45},{"title":"Курица с тыквой в сметанном соусе","description":"","preparationTime":"20 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"50 минут","quantity":"","ingredients":"Филе куриное - 250 г\nТыква - 250 г\nЛук репчатый - 0,5 шт.\nЧеснок - 1-2 зубчика\nУкроп свежий - 0,3 пучка\nСметана - 100 г\nВода - 40 мл\nАрахисовая паста - 0,5 ст. л.\nСоль - по вкусу\nПерец чёрный молотый - по вкусу\nМасло подсолнечное - 30 мл","instructions":"Подготовьте все необходимые ингредиенты для приготовления курицы с тыквой в сметанном соусе.\n\nЛук почистите и нарежьте четвертькольцами. Чеснок почистите и измельчите. В сковороде разогрейте подсолнечное масло. Обжарьте лук и половину чеснока до прозрачности лука.\n\nДобавьте в сковороду тыкву, очищенную от кожуры и семян и нарезанную кубиками среднего размера.\n\nОбжарьте тыкву на сильном огне 5 минут.\n\nДобавьте куриное филе, нарезанное кубиками примерно такого же размера, что и тыква.\n\nОбжарьте всё вместе до того момента, пока куриное филе не изменит свой цвет. Посолите и поперчите курицу с тыквой.\n\nДобавьте сметану и арахисовую пасту.\n\nВлейте кипяток, перемешайте до расхождения сметаны и арахисовой пасты.\n\nТушите тыкву с курицей в сметанном соусе под крышкой на медленном огне около 20 минут или до готовности (мягкости) тыквы.\n\nДобавьте оставшийся чеснок и измельчённую зелень укропа.\n\nПеремешайте блюдо и снимите сковороду с плиты.\n\nКурица с тыквой в сметанном соусе готова к подаче.\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Правильное питание;Главные блюда;Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=148104","originalPicture":"","id":46},{"title":"Курица су-вид","description":"","preparationTime":"15 минут","cookingTime":"1 час 40 минут","inactiveTime":"30 минут","totalTime":"2 часа 25 минут","quantity":"4","ingredients":"куриное филе\t 800 г\nсоль по вкусу\nперец черный по вкусу\nсметана 150 грамм\n","instructions":"Подготовим продукты для куриной грудки су-вид. Нужны пакеты с застежкой зип-лок, можно, конечно, и в обычном пакете приготовить, но и такие пакеты сейчас купить не проблема. Проверьте, чтобы пакеты были целыми и без повреждений, нам не нужно, чтобы вода проникла в пакет.\n\nШАГ 2/8\nКуриную грудку помоем, обсушим. Нарезать на порционные кусочки. К сметане добавить соль, перец и другие специи, перемешать. Залить курицу сметанной заправкой. Дайте постоять от 30 минут до несколько часов (можно на ночь).\n\nШАГ 3/8\nПоложить курицу в пакеты. Из пакета нужно выдавить как можно больше воздуха. Можно опустить пакеты в емкость с водой, и вода выдавит воздух, а можно высосать воздух трубочкой для коктейля)) Я выбрала второй способ. Закрываю пакет, оставляя небольшой отрезок 1–2 см незакрытым. Трубочку для коктейля вставляю в это отверстие и втягиваю воздух, а затем быстро защелкиваю пакет. Вот такой у меня вакуумизатор:))\n\nШАГ 4/8\nВ мультиварку налить теплой воды. Кладем пакеты с мясом. Вода должна покрывать их. Остатки воздуха поднимаются вверх, значит, ничего не мешает куриной грудке готовиться равномерно.\n\nШАГ 5/8\nПереводим мультиварку в ручной режим. Ставим температуру приготовления 70 градусов.\n\nШАГ 6/8\nВыставляем время 1 час. Вот все! Можете заниматься своими делами.\nЯ СТАВИЛА НА 1 ЧАС 40 МИНУТ!!!!!! 1 ЧАСА БУДЕТ МАЛО!!!!!!!\n\nШАГ 7/8\nЧерез час (после сигнала мультиварки) извлечь пакеты. Хотите ешьте теплым, хотите охладите. Можно быстро обжарить на сильном огне до золотистой корочки. Но уверяю, грудка и так вкусная!\n\nШАГ 8/8\nНарезаем тонкими ломтиками и подаем к столу. А дальше, кто как захочет)) Приятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Правильное питание;Главные блюда;Курица;Индейка;В мультиварке;Диета 5 стола","tags":"","video":"","source":"https://www.edimdoma.ru/retsepty/113630-kurinaya-grudka-su-vid-v-multivarke","originalPicture":"","id":47},{"title":"Курица тушеная в сметанно-томатном соусе","description":"","preparationTime":"15 минут","cookingTime":"25 минут","inactiveTime":"","totalTime":"40 минут","quantity":"","ingredients":"куриное филе 500 г\nлук репчатый 1 шт.\nморковь 1 шт.\nчеснок 1 зубчик\nмасло растительное сколько уйдет\nвода 1.5 стакана\nсметана 3 ст. ложки\nтомат-паста 2 ст. ложки\nмука 1 ст. ложка\nсоль по вкусу\nперец чёрный молотый по вкусу","instructions":"Куриное филе порежьте полосками. \nЛук порубите кубиком, а морковь потрите на терке.\n\nОбжарьте курицу на растительном масле минут 5.\n\nВыложите в сковороду с филе лук и морковь, жарьте минуты 3. Потом добавьте продавленный через пресс чеснок, готовьте еще пару минут.\n\nПосыпьте овощи и мясо мукой, Посолите, поперчите, перемешайте.\n\nДобавьте в сковороду сметану и томатную пасту, перемешайте.\n\nЗалейте курицу с овощами водой, доведите до кипения, тушите под крышкой около 5-7 минут.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=134619","originalPicture":"","id":48},{"title":"Курица, тушенная в кисло-сладком соусе с болгарским перцем и морковью","description":"На приготовление курицы с овощами по-китайски требуется совсем немного времени. Куриное мясо и овощи сначала обжариваются, а затем тушатся в кисло-сладком соусе с лёгкой остринкой. Благодаря овощам и соусу блюдо получается сочным, оригинальным и очень вкусным.","preparationTime":"20 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"50 минут","quantity":"4","ingredients":"Куриное филе - 2 шт. (500 г)\nПерец сладкий - 1 шт. (150 г)\nМорковь - 1 шт. (100 г)\nКетчуп томатный - 100 г\nПерец острый молотый - 0,5 ч. ложки\nили перец острый свежий - 0,5 шт. (по вкусу)\nСахар - 1 ст. ложка\nКрахмал кукурузный - 1 ст. ложка\nСоевый соус - 3 ст. ложки\nМасло растительное - 1 ст. ложка\nИмбирь свежий (корень) - 10 г\nКунжут (семена) - 1 ч. ложка","instructions":"Куриное филе нарежьте небольшими кубиками размером примерно 2х2 см.\n\n\nСладкий перец очистите от семян и хвостика и нарежьте кусочками примерно такого же размера, как и куриное филе. Морковь очистите и нарежьте полукружиями.\n\n\nРазогрейте в сковороде с толстым дном или сотейнике растительное масло. Обжарьте на нём куриное филе на сильном огне до выпаривания жидкости, примерно 7-8 минут.\n\n\nДобавьте в сковороду морковь и перец, обжарьте всё вместе на среднем огне ещё 5-7 минут, помешивая.\n\n\nИмбирь натрите на мелкой тёрке.\nДобавьте в сковороду острый молотый перец (или колечки острого перца) и имбирь.\n\n\nПереложите в сковороду томатный кетчуп, перемешайте.\n\n\nДобавьте соевый соус, перемешайте и тушите на среднем огне 5-7 минут.\n\n\nДобавьте в сковороду сахар и крахмал, перемешайте. Прогрейте блюдо на небольшом огне ещё 2 минуты, до загустения соуса.\n\n\nКурица, тушенная в кисло-сладком соусе с болгарским перцем и морковью, готова.\nСнимите сковороду с огня.\n\n\nПрисыпьте курицу с овощами семенами кунжута.\n\n\nТакое блюдо из курицы замечательно сочетается с отварным рисом. Нежные кусочки куриного филе и сочные овощи в оригинальном кисло-сладком соусе с остринкой - идеально!\n\n\nБыстро, вкусно, недорого!\nПриятного аппетита!","notes":"В первый раз делала без острого перца\nКурицу мариновала в соевом соусе с имбирем 12 часов","nutrition":"","favorite":false,"rating":"","categories":"Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=157262","originalPicture":"","id":49},{"title":"Лазанья классическая","description":"","preparationTime":"60 минут","cookingTime":"60 минут","inactiveTime":"","totalTime":"2 часа","quantity":"","ingredients":"Листы для лазаньи - 250 г\nФарш мясной (говяжий) - 450 г\nЛук репчатый - 1 шт.\nМорковь - 1 шт.\nТоматный соус - 60 г\nТоматная паста - 60 г\nМасло сливочное - 60 + 30 г\nМука - 60 г\nМолоко - 800 мл\nСыр пармезан - 120 г\nМускатный орех - 1 ч. л.\nСоль - 2 ч. л.\nПерец молотый - 1 ч. л.","instructions":"Готовим соус болоньезе. Репчатый лук мелко режем, морковь натираем на терке.\n\nВ глубокой сковороде обжариваем лук на сливочном масле до полуготовности. Добавляем к нему морковь, жарим около 5 минут.\n\nЗатем добавляем фарш, посыпаем солью и перцем, хорошо перемешиваем. Жарим на слабом огне еще около 10 минут.\n\nДалее добавляем томатный соус и томатную пасту. Перемешиваем и готовим еще 10 минут.\n\nГотовим соус бешамель. В глубокой сковороде растопить сливочное масло (60 г). Молоко (можно холодное) разделить на две порции по 400 мл. В первую порцию всыпать муку, активно перемешать, чтобы не было комочков. Влить молоко к маслу. В стакане останется мука - в этот же стакан добавить вторую порцию молока, хорошо перемешать, и тоже добавить к маслу. Приправить солью и мускатным орехом, довести до кипения, постоянно помешивая, снять с огня.\n\nНа дно формы выкладываем часть соуса бешамель. Укладываем на него лист лазаньи. Затем выкладываем часть соуса болоньезе. Поверх заливаем частью соуса бешамель и посыпаем тертым пармезаном.\n\nПовторяем слои лазаньи до тех пор, пока все ингредиенты не будут использованы.\n\nВерхний слой листа лазаньи поливаем соусом бешамель и посыпаем пармезаном. \nЗапекаем лазанью в духовке около 40 минут при 180-190 градусах до образования золотистой корочки.\n\nГотовую лазанью вынимаем из духовки, даем постоять минут 10, а затем нарезаем на порции.","notes":"Бешамель готовить ПОСЛЕ болоньезе - если бешамель остынет, будут комочки","nutrition":"","favorite":false,"rating":"","categories":"Главные блюда","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=134858","originalPicture":"","id":50},{"title":"Лимонад классический","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Лимоны среднего размера - 2 шт.\nСахар - 100-200 г (по вкусу)\nВода кипяченая охлажденная - 1 л\nКипяток - 1 стакан\nЛед (по желанию) - 20 кубиков","instructions":"Лимоны хорошо вымыть, нарезать тонкими кружочками.\n\nЛимоны посыпать сахаром.\n\nПеремешать лимоны с сахаром и дать настояться в течение 1-2 часов.\n\nВскипятить воду. Залить лимоны с сахаром кипятком.\n\nКогда вода с лимонами остынет, процедить и добавить охлажденную воду.\n\nЛимонад классический готов. Разлить напиток по бокалам. При желании добавить лед.\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Напитки","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=105479","originalPicture":"","id":51},{"title":"Лимонный пирог","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Тесто \n200 гр масла (мягкое)\nДрожжи 1 чайная ложка\n1 чл соли\n2 стакана муки\n\nНачинка \n1 лимон\n1 стакан сахара\n1 ложка крахмала","instructions":"Дрожжи развести в воде. Добавить соль\nДобавить в чашу масло, муку. Вымесить тесто. \nРазделить тесто на 2 части, побольше и поменьше\nУбрать в холодильник на 30 минут\n\nЛимон разрезать, вытащить семечки. Положить в блендер и пробить. Добавит 1 стакан сахара. Добавить 1 ст ложку крахмала\n\nТесто вырожить на пергамент, расказать. На больший кусок теста выложить начинку, сверху второй кусок теста\n\nВыпекать 1 час на 200 градусах","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Десерты","tags":"","video":"","source":"","originalPicture":"","id":52},{"title":"Лосось в сливочном соусе","description":"","preparationTime":"20 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"50 минут","quantity":"4","ingredients":"рыба красная 300 г\nмука 1 ч. ложки\nмакароны любые 300 г\nсливки 300 мл\nчеснок 1 зубчик\nкабачки 0.5 шт.\nлук зелёный 2-3 шт.\nзелень укропа 3-4 веточки\nсоль по вкусу\nперец чёрный молотый по вкусу\n\n","instructions":"Поставить на плиту воду из расчета 1 литр воды на 100 г пасты. Когда вода закипит, добавить соль и опустить пасту. Варить до состояния «аль денте».\n\nНарезать рыбу небольшими кусочками толщиной 3-4 мм.\nДобавить соль, перец.\n\nТуда же всыпать чайную ложку муки или крахмала и перемешать.\n\nНебольшими пластинками нарезать кабачок.\n\nИзмельчить зелень и чеснок.\n\nНа разогретой сковороде на сильном нагреве тушить кабачок с добавлением небольшого количества воды 10 минут\nВыложить в миску.\n\nОтправить на сковороду рыбу. Если нужно, добавить масла. Тушить с добавлением небольшого количества воды, помешивая. Когда вода выпарится, чуть-чуть обжарить рыбу.\n\nК обжаренной рыбе вернуть кабачок, перемешать.\n\nДобавить сливки, довести до кипения, подсолить и прогреть 10 минут, пока сливки не загустеют\n\nПасту переложить в сковороду.\n\nДобавить зеленый лук и укроп с чесноком. Можно добавить несколько ложек воды.\n\nНакрыть крышкой, прогреть пасту с лососем в сливочном соусе - и ужин готов.\n\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Красная рыба;Главные блюда;Рыба","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=145772","originalPicture":"","id":53},{"title":"Лосось под сметанным соусом в духовке","description":"","preparationTime":"20 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Лосось — 900 Грамм\nСметана — 500 Миллилитр\nРепчатый лук — 2 Штук\nРастительное масло — 2 Ст. ложка\nЧеснок — 3 Зубчик\nУкроп — 0,5 Пучок\nБелый молотый перец — 0 По вкусу\nСоль — 0 По вкусу","instructions":"Рыбу помойте, почистите и нарежьте порционными кусочками.\nПромытый укроп и очищенный чеснок измельчите в блендере.\nДобавьте в блендер перец, сметану и соль. Измельчите соус ещё раз.\nЛук почистите и нашинкуйте полукольцами. В форму для запекания влейте масло и уложите половину лука.\nСверху уложите лосось. Залейте его соусом, а потом выложите оставшийся лук.\nВыпекайте блюдо при 180 градусах в течение 40 минут. ","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Красная рыба;Главные блюда;Рыба","tags":"","video":"","source":"https://povar.ru/recipes/losos_pod_sousom_v_duhovke-48331.html","originalPicture":"","id":54},{"title":"Лосось с брокколи под сыром","description":"","preparationTime":"20 минут","cookingTime":"30 минут","inactiveTime":"30 минут","totalTime":"1 час 30 минут","quantity":"4","ingredients":"Филе лосося 500 гр.\nБрокколи 500 гр.\nСливочное масло 5 ст. ложек\nТвердый сыр 200 гр.\nКуриное яйцо 4 шт.\nЛимонный сок 2 столовые ложки (или половина лимона)\nЖидкие сливки 100 мл.\nМолоко 200 мл.\nМолотый мускатный орех 1 щепотка\nСоль и перец","instructions":"Рыбу необходимо разморозить и тщательно промыть в воде. После этого нарезаем лосось кубиками примерно 3 на 3 сантиметра. Далее выкладываем кусочки в миску, солим и перчим их по вкусу, а также обильно сбрызгиваем соком лимона. В таком виде лосось нужно выдержать 30 минут. Наливаем в кастрюлю воды и ставим ее на огонь. В момент кипения добавляем в воду кусочки лосося и сбавляем огонь до минимального. Готовим рыбу 10 минут, после чего достаем ее и остужаем.\n2 Готовим брокколи.\n\nКапусту нужно промыть и разделить ножом на небольшие соцветия. В кастрюле нужно довести до кипения 0.5 литра воды и немного ее посолить. Аккуратно добавляем в кипяток брокколи и готовим их на умеренном огне около 10 минут, после чего откидываем на дуршлаг и даем жидкости стечь.\n\n \n3 Запекаем блюдо.\n\nВ миске смешиваем молоко и сливки. Тщательно взбиваем содержимое венчиком или вилкой. Далее на крупной терке измельчаем твердый сыр и добавляем его в молочную смесь, перемешиваем. Разбиваем в миску яйца, солим и перчим соус, добавляем щепотку мускатного ореха и тщательно взбиваем содержимое. Противень с бортами или форму смазываем сливочным маслом. Выкладываем на дно кусочки лосося, а сверху соцветия брокколи. Далее равномерно заливаем блюдо сливочным соусом. Разогреваем духовку до температуры 200 градусов и отправляем форму в нее на 20 минут.\n4 Подаем лосось с брокколи под сыром.\n\nДанное блюдо является полноценным, так как содержит в себе и рыбу, и гарнир, и сливочный соус. Его вкус получается очень нежным и максимально сбалансированным. Перекладываем горячий лосось с брокколи в большое блюдо или порционные тарелки, украшаем зеленью и подаем на стол с долькой лимона. Приятного Вам аппетита","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Красная рыба;Рыба","tags":"","video":"","source":"https://www.tvcook.ru/recipes/losos/losos-s-brokkoli-pod-syrom.html","originalPicture":"","id":55},{"title":"Медальоны из индейки","description":"","preparationTime":"20 минут","cookingTime":"40 минут","inactiveTime":"60 минут","totalTime":"2 часа","quantity":"","ingredients":"Индейка (медальоны) - 600 г\nМасло оливковое - 60 мл\nГорчица медовая - 2 ст. л.\nЧеснок - 3 зубчика\nРомарин - 3 веточки\nОрегано сушеный - по вкусу\nСоль - по вкусу\nПерец черный молотый - по вкусу","instructions":"Смешайте в миске масло с горчицей, солью и перцем.\nДобавьте нарезанные ромарин, чеснок и орегано.\nВыложите медальоны в огнеупорную форму для запекания. Полейте соусом и уберите на 1 час в холодильник. Затем отправьте в разогретую до 190 градусов духовку на 35-40 минут.\nПодавайте их к столу горячими, с любимы гарниром","notes":"Лучше использовать не оливковое масло - 03.10 вкус масла перебивал вкус специй. Горчицу либо острее брать, либо больше - 03.10 брала французскую сладкую, 3 ст.ложки","nutrition":"","favorite":false,"rating":"4.0","categories":"Главные блюда;Индейка","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=144570","originalPicture":"","id":56},{"title":"Медово-горчичный соус","description":"Медово-горчичный соус - не только идеальный вариант для заправки салатов, но и для обмазывания курицы, утки, гуся, индейки, рыбы и т.д., чтобы ее запечь. У запекаемого блюда в конце получается хрустящая сладковато-соленая золотистая корочка, которая лишь одним своим видом способна свести с ума! Готовится соус на одном дыхании - вы можете использовать как блендер для взбивания ингредиентов, так и небольшую баночку объемом 180-200мл. Я использую горчицу в зернах - мне она больше нравится, но вы можете добавлять обычную влажную горчицу, которая продается в любом магазине. Лучший вариант - приготовить ее в домашних условиях из горчичного порошка.\n\nЧтобы использовать соус из мёда и горчицы как заправку к салатам, добавьте в него несколько капель яблочного, бальзамического или 9% уксуса. Уксус можно заменить лимонным соком.","preparationTime":"5 минут","cookingTime":"5 минут","inactiveTime":"","totalTime":"10 минут","quantity":"","ingredients":"Мёд - 3 ст.л.\nГорчица в зернах - 2 ст.л.\nРастительное масло - 2 ст.л.\nСоль - 0,5 ч.л.","instructions":"Мёд переместите в небольшую пиалу или креманку, растопите его в микроволновке, но не до кипения, а слегка.\n\nПерелейте мёд в баночку или емкость для блендера. В этом соусе вы можете использовать любой сорт мёда, даже гречишный - его терпкость не будет слышна из-за добавления горчицы. Затем в емкость добавьте саму горчицу.\n\nВлейте растительное масло без запаха и закройте емкость крышкой, если это баночка. Потрусите ее примерно 1 минуту или же взбейте соус блендером, чтобы перемешались все продукты.\n\nВылейте приготовленный соус в соусник или пиалу, используйте по назначению. В холодильнике медово-горчичный соус может храниться около 2-3 суток.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Соусы","tags":"","video":"","source":"","originalPicture":"","id":57},{"title":"Минтай, запеченный в духовке под сырным соусом","description":"","preparationTime":"30 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Филе минтая - 1 кг\nСыр - 150 г\nМолоко - 200 мл\nМасло сливочное - 1 ст. л.\nМука - 1 ст. л.\nТравы прованские\nПерец\nСоль","instructions":"Разогреть духовку до 250-275 градусов.\n\nКаждое филе минтая разрезать на 2-3 куска.\n\nВыложить на противень и отправить в духовку на 5-6 минут.\n\nВ соуснике растопить сливочное масло. Добавить муку, размешать.\n\nПостепенно добавить молоко, постоянно помешивая.\n\nНатереть сыр.\n\nДобавить половину натертого сыра и, помешивая, довести молочно-сырный соус до однородности.\n\nВ форму для запекания выложить филе минтая (предварительно слегка смазать форму приготовленным соусом). Посолить, поперчить.\n\nПолить сверху сырным соусом. Добавить прованские травы.\n\nПосыпать натертым сыром.\n\nЗапекать филе минтая под сырным соусом в духовке 30 минут при 230 градусов.\n\nМинтай, запеченный в духовке под сырным соусом, готов.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Белая рыба;Главные блюда;Рыба","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=144420","originalPicture":"","id":58},{"title":"Морковный суп-пюре","description":"","preparationTime":"5 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"45 минут","quantity":"4","ingredients":"2-3 крупные моркови\n1 луковица\n2 картофелины\n1 литр овощного бульона\nсоль, карри, имбирь (сухой)\n200 мл сливок","instructions":"1. Приготовить овощной бульон - луковицу отварить с лаврушкой и перцем-горошком 20 минут. Потом луковицу и специи выкинуть.\n2. Морковь почистить и порезать кубиками\n3. Картофель почистить и порезать кубиками.\n4. Варить морковь и картофель в бульоне до готовности, пока они не станут мягкими, примерно 20 минут. Посолить, добавить приправы.\n5. Снять с огня и дать немного остыть. Блендером измельчить картофель и морковь до пюреобразной массы.\n6. В кастрюлю с пюре влить сливки, поставить на огонь и довести до кипения.\n7. Подавайте морковный суп-пюре со сливками горячим.\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Супы;Диета 5 стола","tags":"","video":"","source":"https://yummybook.ru/recept/morkovnyj-sup-pyure-so-slivkami","originalPicture":"","id":59},{"title":"Морковный суп-пюре с плавленным сыром","description":"","preparationTime":"10 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"40 минут","quantity":"4","ingredients":"морковь 350 г\nлук репчатый 200 г\nсыр плавленый 100 г\nзелень укропа 2-3 веточки\nтимьян (чабрец, богородская трава) сушеный 1 ч. ложка\nмасло оливковое 1 ст. ложка\nсоль по вкусу\nперец чёрный молотый по вкусу\n\n","instructions":"Кастрюлю с 1 л воды ставим на нагрев.\n\nЛук очищаем и крупно нарезаем.\n\nМорковь очищаем и также крупно нарезаем.\n\nВ сковороде на оливковом масле обжариваем лук до легкого зарумянивания.\n\nДобавляем морковь и обжариваем еще 1-2 минуты.\n\nВ кипящую воду кладем плавленый сыр и доводим его до полного растворения постоянно помешивая.\n\nВ кастрюлю кладем овощи, тимьян, соль и перец. Варим 15-20 минут до готовности моркови.\n\nМелко нарезаем укроп.\n\nС помощью погружного блендера, измельчаем содержимое кастрюли.\n\nДобавляем укроп. Перемешиваем и прогреваем все вместе 1 минуту.\n\nМорковный суп с сыром готов. Приятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=150805","originalPicture":"","id":60},{"title":"Мясо по французски (курица)","description":"","preparationTime":"20 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Филе куриное - 3 шт.\nЛук репчатый - 3 шт.\nСыр твердый - 300 г\nМайонез - 200 г\nПерец черный молотый - по вкусу\nСоль - по вкусу\nМасло растительное (по желанию)\n","instructions":"Куриное филе помыть, обсушить бумажными полотенцами, разрезать на порционные кусочки. Из одного филе у меня получается 5-6 кусочков.\n\nОтбить мясо. Я кладу его в пакет и отбиваю с помощью кухонного молотка.\n\nОтбитое мясо посолить, поперчить. Отставить в сторону минут на 20, пусть немного пропитается. \n(Если вы складываете мясо стопочкой, можно немножко подливать между отбивными растительное масло, чтобы они между собой не склеивались.)\n\nТем временем лук нарезать полукольцами.\n\nПротивень смазать растительным маслом. Выложить лук, разделяя полукольца, на противень.\n\nНа лук выложить мясо. Смазать майонезом.\n\nТвёрдый сыр натереть на крупной терке.\n\nЗасыпать мясо тёртым сыром.\n\nОтправить мясо по-французски в духовку, разогретую до 200 градусов, на 30-40 минут. Сыр должен хорошо подрумяниться.\n\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=147569","originalPicture":"","id":61},{"title":"Овощи, тушенные в мультиварке","description":"","preparationTime":"15 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Лук репчатый - 1 шт.\nКабачок - 1 шт.\nМорковь - 1 шт.\nПерец болгарский - 1 шт.\nПомидор - 1 шт.\nТыква - 250 грамм\nКартофель - 2 шт. \nСоль - по вкусу\nПерец - по вкусу\nМасло растительное - 1 ст. л.\n","instructions":"Лук нарезать мелкими кубиками и обжарить на растительном масле в режиме \"Жарка\" до полупрозрачности.\n\nОстальные овощи нарезать кубиками.\n\nДобавить все овощи к луку. \n\nПосолить, поперчить. Тщательно перемешать. Воду добавлять не надо! \n\nПод закрытой крышкой жарить овощи до окончания программы.\n\nУстановить режим \"Тушение\" на 40 минут.\n\nПриятного аппетита","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Гарнир;В мультиварке","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=124584","originalPicture":"","id":62},{"title":"Овощной салат с арбузом","description":"","preparationTime":"15 минут","cookingTime":"5 минут","inactiveTime":"","totalTime":"20 минут","quantity":"","ingredients":"Помидоры красные - 1 шт\nПомидоры желтые - 1 шт\nФета - 100 г\nАрбуз - 150 г\nМаслины - 80 г\nОливковое масло - 1 ст ложка\nБальзамический соус - 10 мл","instructions":"Помидоры и фету нарезать кубиками. Маслины нарезать полукольцами. Смешать в миске, заправить оливковым маслом, посолить, поперчить. Перемешать.\nАрбуз нарезать крупными кубиками, добавить к овощам. \nЗаправить салат небольшим количеством бальзамического соуса.\n","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Правильное питание;Холодные закуски","tags":"","video":"","source":"","originalPicture":"","id":63},{"title":"Овощной суп-пюре","description":"","preparationTime":"15 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"50 минут","quantity":"","ingredients":"500 г. картофеля\n1 средний кабачок\n 2 больших моркови\nшпинат\n100 г. брокколи\nсоль, перец, специи","instructions":"1. Картофель очистить и нарезать.\nОвощной суп-пюре - шаг 2\t\n2. Лук и морковь очистить и нарезать произвольными кусочками, все равно потом в пюре перетрутся.\nОвощной суп-пюре - шаг 3\t\n3. Кабачок вымыть и нарезать.\n4. Шпинат и брокколи вынуть из морозильной камеры. Брокколи отварить в отдельной кастрюле, потом слить. \n5. Нарезанные овощи сложить в кастрюлю, залить кипятком так, чтобы вода покрывала все овощи, и варить до готовности, пока овощи не станут мягкими. Через 20 минут добавить брокколи и порубленный шпинат. Добавить соль, перец, специи, по желанию бульонные кубики.\n6. Погружным блендером пюрировать суп.\n7. Подавать овощной суп-пюре горячим, можно с сухариками.\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Супы","tags":"","video":"","source":"https://yummybook.ru/recept/ovoschnoj-sup-pyure","originalPicture":"","id":64},{"title":"Овощной суп-пюре с сыром и гренками","description":"","preparationTime":"20 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"50 минут","quantity":"4","ingredients":"Картофель - 2 шт.\nСыр твёрдый или плавленый (сливочный) - 200 г\nПомидор - 1 шт.\nМорковь - 1 шт.\nЛук репчатый красный - 1 шт.\nМасло растительное - 2 ст. ложки\nСоль - 1 ч. ложка","instructions":"Подготовьте все ингредиенты для супа-пюре.\nМожно использовать сыр твёрдых сортов, который хорошо растворяется, или плавленый сырок.\nЛук очистите.\n\nКартофель очистите и нарежьте крупными кубиками. Залейте картофель 1 л воды, доведите до кипения и варите на небольшом огне до готовности, примерно 10-15 минут.\n\nОчищенный лук нарежьте небольшими кубиками.\nМорковь очистите и нарежьте брусочками.\n\nВ сковороде разогрейте растительное масло и обжарьте лук до прозрачности.\n\nЗатем добавьте в сковороду морковь и обжарьте до мягкости, примерно 8-10 минут.\n\nПомидор залейте кипятком и оставьте на 2-3 минуты, затем снимите кожицу.\n\nМякоть помидора нарежьте средними кусочками.\n\nВ кастрюлю с картофелем добавьте зажарку из сковороды.\n\nЗатем добавьте помидоры.\n\nПосолите суп и варите ещё 8-10 минут.\n\nСыр натрите на мелкой тёрке и добавьте в кастрюлю.\n\nКак только сыр растворится, выключите огонь. Погружным блендером измельчите содержимое кастрюли в пюре.\n\nНежный сливочный аромат, кремовая консистенция и красивый желто-оранжевый цвет супа без мяса вызывают аппетит.\n\nЛомтик белого хлеба нарежьте небольшими кубиками. \nВ сковороде разогрейте оливковое масло и обжарьте кубики хлеба со всех сторон до золотистости.\n\nРазлейте готовый овощной суп-пюре с сыром по тарелкам. Добавьте в каждую тарелку ","notes":"","nutrition":"","favorite":true,"rating":"5.0","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=153813","originalPicture":"","id":65},{"title":"Омлет","description":"","preparationTime":"5 минут","cookingTime":"10 минут","inactiveTime":"","totalTime":"15 минут","quantity":"","ingredients":"Яйцо - 1 штука\nМолоко - 100 мл\nПомидор - половинка\nТертый сыр\nРастительное мало\nСоль, перец\n","instructions":"Помидор нарезать кружочками\nХорошо разогреть растительное масло на сковороде.\nВыложить на сковороду помидоры и жарить на сильном огне минуту, затем перевернуть\nВзбить в миске яйцо. Добавить во взбитое яйцо молоко, еще раз взбить. Добавить сыр, посолить, поперчить, еще раз взбить. \nВылить яичную смесь на сковороду, убавить огонь (1,5 достаточно), накрыть крышкой. Жарить, пока смесь не загустеет - 4-5 минут","notes":"","nutrition":"","favorite":false,"rating":"","categories":"","tags":"","video":"","source":"","originalPicture":"","id":66},{"title":"Простой соус бешамель","description":"Соус из молока, муки и масла. Простой бешамель может быть самостоятельным соусом ко многим блюдам и основой для других соусов.","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"молоко 2 стакана\nмука 50 г\nмасло сливочное 50 г\nперец белый по вкусу\nсоль 1 щепотка","instructions":"В кастрюльке растопить масло.\n\n\nВсыпать муку.\n\n\nВенчиком перемешивать смесь 2 минуты до загустения.\n\n\nНебольшими порциями влить молоко. Перемешивать до однородности.\n\n\nПосолить и поперчить.\n\n\nСнова перемешать соус бешамель венчиком.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Соусы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=128182","originalPicture":"","id":67},{"title":"РЫБА В СЛИВКАХ В ДУХОВКЕ","description":"","preparationTime":"40 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час 30 минут","quantity":"6","ingredients":"Филе горбуши - 900 гр\nСливки - 450 мл\nЧеснок - 3 дольки\nТвёрдый сыр - 150 гр\nСоль - по вкусу","instructions":"Шаг 1.\nПодготовьте необходимые продукты. Подойдет любая рыба: филе или стейк. Предпочтительней охлажденная рыба - она гораздо полезнее замороженной. Если же у вас только замороженная рыба, обязательно правильно ее размораживайте. Сразу после морозилки поместите рыбу на 8-10 часов в холодильную камеру и только потом полностью разморозьте ее при комнатной температуре. Сливки берите любой жирности, но вкуснее 23%.\n\nШаг 2.\nРыбу помойте, обсушите. При необходимости удалите плавники и кости. Если у вас рыбный стейк, можно разрезать его пополам. Если у вас рыбное филе, нарежьте его на кусочки средней величины. Кожу на рыбном филе лучше оставить - в противном случае кусочки не будут держать форму и превратятся в кашу при запекании.\n\nШаг 3.\nДля запекания блюда нам понадобится жаропрочная форму с бортиками средней величины. Выложите в форму рыбу. Если у вас кусочки филе на коже, то располагайте их кожей вниз. На этом этапе вы можете добавить к рыбке какие-то любимые приправы: возможно вам будет достаточно молотого перца, или возможно вы захотите посыпать рыбку сушеными прованскими травами или тимьяном.\n\nШаг 4.\nСливки немного посолите. Можно использовать сливки и меньшего процента жирности,или даже молоко.\n\nШаг 5.\nДобавьте к сливкам измельченный зубчик чеснока. Я пропустила его через пресс, но можно и натереть его на терке или пропустить через пресс. При отсутствии свежего чеснока вполне можно заменить его чесночным порошком - положите половину чайной ложечки.\n\nШаг 6.\nСыр натрите на терке и добавьте к сливкам. Сыр может быть абсолютно любым: твердым, полутвердым, также подойдет и моцарелла и сыр с плесенью.\n\nШаг 7.\nВылейте сливочный соус на рыбу. Можно положить для аромата веточку свежего тимьяна или розмарина, или же любой другой свежей зелени. Запекайте в разогретой духовке при температуре 180 градусов около 30 минут. Можно первые 15 минут прикрыть форму фольгой.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Красная рыба","tags":"","video":"","source":"https://1000.menu/cooking/28219-ryba-v-slivkax-v-duxovke","originalPicture":"","id":68},{"title":"Ризотто","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"30 минут","quantity":"","ingredients":"Рис - 100 гр\nВода - 300 мл\nСыр пармезан - 80 гр\nМасло сливочное - 50 гр\nМасло оливковое\nЧеснок\nРозмарин\nСоль\n\n","instructions":"В сотейнике разогреть оливковое масло, на нем слегка прижарить чеснок и розмарин. Когда они дадут маслу аромат, вытащить чеснок, от розмарина оставить только листочки\nЧуть-чуть прижарить рис, чтобы образовался колер\nДобавить воду, варить 24-26 минут. Посолить. При необходимости подливать воду\nКогда рис будет готов, добавить масло и тертый пармезан, и активно перемешать, чтобы ничего не отсеклось\n","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Гарнир","tags":"","video":"","source":"","originalPicture":"","id":69},{"title":"Рубленые рыбные котлеты","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Ингредиенты рыбное филе 300 г \n\nкуриные яйца 2 шт. \n\nрепчатый лук 1 шт. \n\nСметана 2 ст. л. \n\nГорчица 1 ч.л\n\nпшеничная мука 2 ст. л. \n\nсоль 0,5 ч. л. \n\nсмесь молотых перцев 2 щеп.\n","instructions":"Измельчаю рыбное филе. Рублю его ножом небольшими кусочками. Чем меньше, тем лучше. Размер кубика, как на оливье. \n\nНебольшую луковицу очищаю и измельчаю мелким кубиком (еще лучше мелко порезать и пропустить через блендер). Соединяю в миске с рыбой. Туда же кладу соль и перец, 2 яйца среднего размера. Перемешиваю и добавляю сметану и 1 неполную чайную ложку горчицы, не слишком острой. \n\nДалее всыпаю муку — здесь ориентируйтесь на консистенцию фарша. Если самостоятельно филировали рыбу, то смесь будет средней консистенции. Если использовали покупное готовое филе, то она будет более жидкой и муки можно добавить больше на 1 ложку. Итоговая консистенция должна быть такой, чтобы смесь легко можно было зачерпнуть ложкой и выкладывать на сковороду, как оладьи. Она не должна быть слишком густой, но и не растекаться. \n\nЗатягиваю миску пищевой пленкой и ставлю на 30 минут в холодильник, пусть фарш промаринуется и слегка набухнет мука. После этого разогреваю в сковороде растительное масло и жарю котлеты, зачерпывая по 1 столовой ложке смеси. Готовлю на среднем огне, без крышки, примерно по 3-4 минуты с каждой стороны, до зарумянивания. Переворачивать удобнее всего лопаточкой.\n","notes":"Побольше муки","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Рыба","tags":"","video":"","source":"Источник: https://webpudding.ru/rybnye-kotlety-rublenye/","originalPicture":"","id":70},{"title":"Рыба в сметане в духовке","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"40 минут","quantity":"4","ingredients":"Филе белой рыбы  — 4 Штуки \nСметана  — 150 Миллилитров \nСоль  — 0,5 Чайных ложки \nПерец черный  — 0,5 Чайных ложки \nЛимонная цедра  — 0,5 Чайных ложки \nУкроп  — 1 Ст. ложка \nЧеснок  — 3 Зубчика \nЗеленый лук  — 3 Штуки \nЛимон  — 0,5 Штуки \nПармезан  — 1/3 Стакана \nКрасный перец чили  — 0,5 Чайных ложки","instructions":"Смешайте сметану, соль, перец, лимонную цедру и мелко нарезанный укроп. \nИзмельчите чеснок или выдавите его через чеснокодавку. Стрелки зеленого лука мелко нарежьте. \nКрасный перец залейте соком половины лимона. Затем соедините это всё со сметанным маринадом, чесноком с луком.\nРыбу смажьте со всех сторон сметанным маринадом и сбрызните лимонным соком. \nВыложите филе в жаропрочную посуду и покройте остатком маринада. Присыпьте тертым пармезаном и отправьте в духовку на 15-20 минут, выпекайте при температуре 200 градусов. \n6В конце приготовления сбрызните филе оливковым маслом. Подавайте блюдо, украсив зеленым луком.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Белая рыба;Рыба","tags":"","video":"","source":"https://povar.ru/recipes/ryba_v_smetane_v_duhovke-54830.html","originalPicture":"","id":71},{"title":"Рыба по-гречески","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Рыба (любое филе белой рыбы, морской или речной, у меня судак) - 900 г\nПомидоры - 600 г\nЧеснок - 2 больших зубчика (16 г)\nМайонез (я смешала майонез со сметаной) - 200 г\nСыр твердый - 150 г\nСоль - по вкусу\nПерец - по вкусу\nМасло растительное (для смазывания формы) - 1-2 ст.л.\n","instructions":"Как приготовить рыбу \"по-гречески\":\n\nГотовим заливку для рыбы: помидоры нарезаем небольшими кубиками, сыр натираем на крупной тёрке, чеснок - на мелкой или выдавливаем через пресс, добавляем майонез.\n\nПеремешиваем.\n\nФиле рыбы нарезаем кусочками, солим и перчим. Выкладываем в смазанную маслом форму (26х36 см) или в противень.\n\nВыкладываем на рыбу помидорную заливку. И ставим рыбу \"по-гречески\" в разогретую до 180-200 градусов духовку на 20-30 минут (время запекания зависит от особенностей вашей духовки).\n\nДостаем из духовки","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Рыба;Главные блюда","tags":"","video":"","source":"","originalPicture":"","id":72},{"title":"Рыба по-французски в духовке","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Красная рыба 800 Грамм\nМолоко 3 Стакана\nМасло сливочное 2 Ст. ложки\nМука 2 Ст. ложки\nЧерный перец молотый По вкусу\nСоль По вкусу\nМасло растительное По вкусу\nдля смазывания формы\nМускатный орех 1-2 Щепотки","instructions":"Нарезать филе на порционные кусочки.\n\nУложить в смазанную маслом форму для запекания. Посолить, поперчить. \n\nПриготовить соус бешамель\nНа сковороде или в сотейнике слегка прижарить муку, до кремового цвета. Затем добавитть сливочное масло, перемешать так, чтобы оно растопилось. Масло с мукой должны принять консистенцию сметаны\n\nНагреть молоко, добавить его к муке с маслом. Активно перемешать, добавить соль, мускатный орех, еще раз перемешать.\n\nЗалить рыбу соусом и отправить в разогретую до 180С духовку на 15-20 минут.\nПодавать горячей - с гарниром или без. Приятного аппетита! \n\n","notes":"","nutrition":"","favorite":false,"rating":"4.0","categories":"Красная рыба;Рыба","tags":"","video":"","source":"","originalPicture":"","id":73},{"title":"Рыба с брокколи в духовке","description":"","preparationTime":"30 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"60 минут","quantity":"","ingredients":"Филе лосося  — 4 Ломтика \nБрокколи  — 350 Грамм \nЛимон  — 1 Штука \nЗеленый лук  — 20 Грамм \nСоль  — 1 Щепотка Перец  — 1 Щепотка \nОливковое масло  — 1-2 Ст. ложек \n","instructions":"1. Для начала необходимо вымыть и просушить кусочки лосося. Шкурку снимать не нужно, чтобы рыба не потеряла форму. \n2. Брокколи вымыть и просушить. Разделить на соцветия. \n3. На дно жаропрочной формы с антипригарным покрытием выложить кусочки лосося, оставляя свободное место между ними. \n4. В образовавшиеся просветы выложить брокколи. \n5. Лимон вымыть и разрезать пополам. Из одной половинки выжать сок и взбрызнуть им рыбу с брокколи. Вторую половину разрезать и выложить целиком в форму. \n6. Зеленый лук вымыть, просушить и нарезать. Присыпать блюдо луком. \n7. Сверху взбрызнуть небольшим количеством оливкового масла и отправить в предварительно разогретую духовку. \n8. Через 15-20 минут рыба с брокколи в духовке в домашних условиях будет готова. Главное - это не пересушить лосось. \nПри желании можно сбрызнуть блюдо соевым соусом или присыпать дополнительно свежей зеленью. \nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Красная рыба;Рыба","tags":"","video":"","source":"https://povar.ru/recipes/ryba_s_brokkoli_v_duhovke-21894.html","originalPicture":"","id":74},{"title":"Рыба, запеченная в сметане с морковью","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Филе рыбы (минтай) - 4 шт.\nМорковь - 1 шт.\nСметана - 300 г\nСоль - 2 ч.л.\nПерец - 2 ч.л.","instructions":"Как приготовить рыбу, запеченную в сметане с морковью:\n\nСолим, перчим сметану, добавляем морковь, перемешиваем.\n\nВыкладываем на противень рыбу. Морковь со сметаной кладем поверх рыбы. \nЗапекаем в духовке при 180 градусах 10-15 минут.\n\nПодаем рыбу, запеченную в сметане, с гарниром и наслаждаемся!","notes":"ЕЩЕ НЕ ГОТОВИЛА","nutrition":"","favorite":false,"rating":"","categories":"Главные блюда;Рыба","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=135061","originalPicture":"","id":75},{"title":"Рыбное суфле","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"50 минут","quantity":"","ingredients":"Рыба – 200 г\nЖелток яичный – 2 шт.\nМолоко – 100 мл\nСоль – по вкусу\nМасло сливочное – 0.5 ч.л.","instructions":"Нарезать филе рыбы средними кусочками.\n\nПоместить кусочки рыбного филе в чашу блендера, сюда же добавить 2 средних куриных желтка, растительное масло без запаха, молоко, соль по вкусу, если вы добавляете её в блюда вашего малыша.\n\nХорошо взбить блендером в однородную массу.\n\nРекомендую измельчать ингредиенты на высокой скорости блендера, чтобы масса получилась однородной и гладкой.\n\nКерамические или силиконовые формочки смазать сливочным маслом, выложить рыбную массу, не заполняя её на 1 см доверху, так как во время готовки суфле сильно поднимется.\n\nПереместить формочки в пароварку или установить водяную баню и приготовить рыбное суфле на пару 30-35 минут. ВОДЯНУЮ БАНЮ СТАВИТЬ ЗАРАНЕЕ, МИНУТ ЗА 10!!!!!!!!\n\nКстати, такое суфле можно запечь и в духовке, правда его текстура получится чуть плотнее – будет больше напоминать нежную котлету.\n\nВремя приготовления в духовке 25-30 минут при 170 градусах.\n\nВо время приготовления суфле поднимется в формочках, но потом осядет – это нормально.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Белая рыба;Рыба;Диета 5 стола","tags":"","video":"","source":"https://menunedeli.ru/recipe/vozdushnoe-rybnoe-sufle-dlya-detej/","originalPicture":"","id":76},{"title":"Салат Цезарь","description":"","preparationTime":"","cookingTime":"30 минут","inactiveTime":"","totalTime":"30 минут","quantity":"3","ingredients":"грудка куриная - 300 г;\nлистья салата - 10-20 шт.;\nтоматы черри - 250 г;\nсыр пармезан - 80 г;\nбелый хлеб - 3 нарезных кусочка;\nсоус calve для цезаря - полпачки;\nспеции - по вкусу;\nсоль - по вкусу","instructions":"Листья салата и \"черри\" промываем теплой водой (не горячей). Даем стечь и обсохнуть, можно промокнуть салфеткой.\nКуриную грудку освобождаем от костей и кожи. Нарезаем кусочками (не слишком маленькими).\nОбжариваем грудку на сковороде, подсаливая и добавляя любимые специи. После обжарки до готовности грудку необходимо остудить. \nСледующий этап - приготовление сухариков. Нарезаем белый хлеб кусочками. Лучше с хлебом не перебарщивать, а то будет чувствоваться один хлеб (не больше 3-х нарезных стандартных кусочков). Можно слегка посолить.\nХлеб можно сдобрить оливковым маслом и добавить чеснока, но я делаю без этого, тоже получается вкусно. \nСтавим в духовку и делаем сухарики, но не слишком жесткие. Лучше, чтобы серединка оставалась слегка мягкой.\nПока готовятся сухарики, необходимо поработать с соусом. Берем соус \"Calve\" для \"Цезаря\", где-то полпачки, и разводим его питьевой водой 1:1. Соус должен быть достаточно жидким, иначе наш салат не получится.\nСыр \"Пармезан\" необходимо натереть на мелкой терке.\nОсталось дело за малым - необходимо собрать ингредиенты вместе.\nВниз кладем курицу.\nДалее - помиодоры \"Черри\". Их не нарезаем!\nСледующий слой - наши сухарики.\nДалее необходимо порвать листья салата, именно порвать, а не нарезать, чтобы они не потеряли объем и красивый вид.\nСверху посыпаем салат сыром.\nИ заливаем наше блюдо разбавленным соусом \"Кальве\".\nСалат не стоит перемешивать, иначе получится каша. Лучше будет, если салат немного постоит, тогда сухарики слегка пропитаются соусом.\nВыкладывать на тарелку необходимо так, чтобы попали все ингредиенты, слегка перемешивая. Соус соединится с сыром и получится очень вкусно. Листья салата остаются свежими и придают салату красивый вид. \nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"4.5","categories":"Холодные закуски","tags":"","video":"","source":"","originalPicture":"","id":77},{"title":"Салат из авокадо, тунца, помидоров и сыра","description":"","preparationTime":"","cookingTime":"10 минут","inactiveTime":"","totalTime":"10 минут","quantity":"","ingredients":"Авокадо крупный - 1 шт.\nПомидорки черри - 8 шт.\nТунец консервированный, в собственном соку - 180 г\nСыр фета - 80 г\nЛимонный сок - 1 ст.л.\nМасло оливковое - 2 ст.л.","instructions":"Помидорки черри разрежьте на четыре части. \nФету нарежьте кубиками.\n\nАвокадо почистите и нарежьте кубиками, размером приблизительно 2х2 см. (Я оставила длинные ломтики авокадо для украшения, но это по желанию.)\n\nВ большой миске соедините авокадо, помидоры, тунец. Добавьте лимонный сок и масло, перемешайте аккуратно.\n\nВыложите салат на тарелку, а сверху посыпьте кубиками сыра. Украсьте салат с авокадо по вашему желанию.\nПриятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Правильное питание;Холодные закуски;Гарнир","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=133739","originalPicture":"","id":78},{"title":"Салат с курицей и авокадо","description":"","preparationTime":"","cookingTime":"15 минут","inactiveTime":"","totalTime":"15 минут","quantity":"2","ingredients":"Грудка куриная - 1 шт.\nАвокадо - 0,5 шт.\nПерец болгарский - 1 шт.\nПомидор - 1 шт.\nОгурец - 1 шт.\nСыр твердый - 50 г\nМайонез - 1 ст. л.\nЧеснок - 1 зубок\nСоль - по вкусу\nПерец черный молотый - по вкусу\n","instructions":"Авокадо разрежем пополам, удалим косточку, снимем кожуру и нарежем мякоть авокадо кубиком.\n\nУ болгарского перца удалим плодоножку и семена. Нарежем перец кубиком.\n\nОгурец также нарежем кубиком.\n\nПомидор нарежем кубиком. \n\nОтваренное куриное филе нарежем кубиком, как и остальные ингредиенты.\n\nВыложим все нарезанные ингредиенты салата в миску.\n\nДобавим в салат сметану, соль и черный молотый перец.\n\nСыр твердый натрем на средней терке и добавим в салат.\n\nХорошо перемешаем все ингредиенты салата с курицей и авокадо.\n\nСалат с курицей и авокадо готов. Приятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Холодные закуски","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=142106","originalPicture":"","id":79},{"title":"Салат с курицей, грушей, огурцом и запеченным болгарским перцем","description":"","preparationTime":"","cookingTime":"30 минут","inactiveTime":"","totalTime":"30 минут","quantity":"","ingredients":"Филе куриное - 250-300 г\nОгурцы - 2 шт.\nГруша (крупная) - 1 шт.\nПерец болгарский - 1 шт.\nЛимон - 1 шт.\nМайонез или йогурт натуральный без добавок - 4 ст. ложки\nСоль - по вкусу\nПерец чёрный молотый - по вкусу\nПетрушка свежая - несколько веточек","instructions":"Подготовим все необходимые ингредиенты.\nКуриное филе предварительно отвариваем в подсоленной воде около получаса. Остужаем.\nВключаем духовку и разогреваем её до 200 градусов.\n\nЗапекаем болгарский перец в духовке примерно 10 минут.\n\nГрушу очищаем от кожуры и семян. Нарезаем ломтиками.\n\nИз лимона выжимаем сок.\n\nСбрызгиваем грушу половиной лимонного сока, чтобы она не потемнела.\n\nОгурец очищаем от кожуры и нарезаем соломкой.\n\nКуриное филе также нарезаем соломкой.\n\nЗапеченный перец очищаем от семян и нарезаем соломкой. Выделившийся при запекании сок не выливаем. Он понадобится для приготовления заправки.\n\nЗаймемся приготовлением заправки для салата.\nЗелень петрушки мелко нарезаем.\n\nСоединяем йогурт или майонез, оставшийся лимонный сок, сок от запеченного перца и петрушку. Перемешиваем заправку.\n\nСолим и перчим салат по вкусу.\n\nДобавляем заправку и ","notes":"Можно добавить чего нибудь хрустящего, типа орешков или сухариков. Очень хорошо будет смотреться пармезан","nutrition":"","favorite":false,"rating":"5.0","categories":"Холодные закуски;Курица","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=152571","originalPicture":"","id":80},{"title":"Салат с тыквой, рукколой и фетой","description":"","preparationTime":"20 минут","cookingTime":"10 минут","inactiveTime":"","totalTime":"30 минут","quantity":"2","ingredients":"30 г рукколы\nсоль, зира, перец по вкусу\n1 ч. л. бальзамического уксуса\n1 ст.л. оливкового масла\n200-300 г печеной тыквы\n50 г сыра фета","instructions":"1. Тыкву очистить, нарезать небольшими кубиками и запечь в духовке: выложить кусочки тыквы на фольгу, сбрызнуть чуть-чуть маслом, добавить соль, перец и специи. Запекать в духовке при 180-200 в течении 20 минут. Тыква должна стать мягкой. Для салата ее можно либо остудить, либо оставить горячей. Печеные кусочки тыквы высыпать в салатник.\n2. К тыкве добавить листики рукколы,\n3. нарезанный кубиками сыр фета\n4. Смешать оливковое масло, бальзамический уксус, соль, перец, зиру и заправить салат. \n5. Перемешать и подавать на стол.\nПриятного аппетита!","notes":"","nutrition":"","favorite":true,"rating":"5.0","categories":"Правильное питание;Холодные закуски;Гарнир","tags":"","video":"","source":"https://yummybook.ru/recept/salat-s-tykvoj-rukkoloj-i-fetoj","originalPicture":"","id":81},{"title":"Свежий салат с морковью и яблоками","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"20 минут","quantity":"","ingredients":"1 морковь\n1 яблоко\n150 г натурального йогурта\n1 ст. л. меда\n1 ч. л. лимонного сока\nсоль, перец по вкусу","instructions":"1. Яблоки без кожуры и морковь натереть на крупной терке.\n2. Добавить сок лимона и перемешать.\n3. В небольшой миске соединить мед, натуральный йогурт, посолить и поперчить по вкусу. Заправить салат получившимся соусом и перемешать. Подавать к основным блюдам! Приятного аппетита!\n","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Правильное питание;Холодные закуски","tags":"","video":"","source":"https://yummybook.ru/recept/svezhij-salat-s-morkovyu-i-yablokami","originalPicture":"","id":82},{"title":"Стейк из красной рыбы в мультиварке","description":"","preparationTime":"30 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Филе красной рыбы (семга, лосось)\nЛимон - 1 шт\nСоль, перец по вкусу","instructions":"Промываем стейки под прохладной водой, после чего насухо вытираем рыбу.\n\nПосыпаем семгу специями и солью, а затем втираем их в рыбку.\n\nЛимон режем на две части. Из одной выдавливаем сок, поливаем семгу, после чего оставляем на 15 минут. Вторую часть сока выливаем в чашу мультиварки, наливаем литр воды и устанавливаем режим «На пару». Если вы любите сильный аромат, в мультиварку также можно кинуть корочки.\n\nПерекладываем рыбу в корзину для пароварки.\n\nВажно: ставить семгу в мультиварку нужно тогда, когда закипит вода. Готовится рыба 30 минут (если кусочки большие, то дольше).\n\nВот и все – ароматная семга готова. Подавать ее нужно в горячем виде с любым гарниром, к примеру, рисом, овощами, перловкой и так далее. Если есть желание, семгу можно посыпать зеленью перед подачей.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Красная рыба;Правильное питание;Главные блюда;Рыба","tags":"","video":"","source":"","originalPicture":"","id":83},{"title":"Судак на овощной подушке","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Судак  — 500 Грамм \nКартофель  — 6-8 Штук \nЛук  — 1 Штука \nМорковь  — 1 Штука \nСметана  — 100 Грамм \nРастительное масло  — 50 Миллилитров \nСоль  — По вкусу \nСпеции  — По вкусу","instructions":"Подготовьте все ингредиенты. Рыбу разделайте на филе, нарежьте порционными кусочками. Посолите и поперчите по вкусу. Добавьте 2 ст.л. сметаны, соль, специи по вкусу и перемешайте. \nОтдельно обжарьте лук и морковь. \nКартофель нарежьте тонкими кружочками, посолите, добавьте специи, 1,5 ст.л. растительного масла и перемешайте. \nВ жаропрочную форму выложите картофель. Оставшуюся сметану разведите в воде, посолите и полейте этим соусом картофель. Вода должна покрывать его примерно наполовину. Сверху выложите обжаренные овощи. На овощи выложите маринованное филе судака. \nЗапекайте в духовке при температуре 180-200 градусов около 40 минут. Если верх начинает подрумяниваться, а картофель еще не готов, то просто накройте форму фольгой.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"","tags":"","video":"","source":"https://povar.ru/recipes/sudak_na_ovoshnoi_podushke-86138.html","originalPicture":"","id":84},{"title":"Судак с брокколи в духовке","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Филе судака 400 Грамм\nБрокколи 150 Грамм\nЯйцо куриное 2 Штуки\nСметана 100 Грамм\nСыр твердый 80 Грамм\nЛук репчатый 1 Штука\nПодсолнечное масло 30 Миллилитров\nСоль По вкусу\nПерец черный молотый","instructions":"Шаг 1\n\nПодготовьте ингредиенты для приготовления судака с брокколи в духовке.\n\nШаг 2\n\nРепчатый лук очистите, помойте и нарежьте полукольцами. Выложите в сковороду.\n\nШаг 3\n\nДобавьте подсолнечное масло. Поставьте сковороду на огонь и обжарьте лук до прозрачности.\n\nШаг 4\n\nВ миску разбейте яйца.\n\nШаг 5\n\nДобавьте сметану.\n\nШаг 6\n\nСыр натрите на тёрке и добавьте половину в миску.\n\nШаг 7\n\nПосолите, поперчите и перемешайте. Заливка готова.\n\nШаг 8\n\nВ форму для запекания выложите обжаренный лук и половину предварительно отваренной и нарезанной брокколи.\n\nШаг 9\n\nПоверх лука и брокколи выложите кусочки судака. Посолите рыбу.\n\nШаг 10\n\nСверху выложите оставшуюся половину брокколи.\n\nШаг 11\n\nЗалейте рыбу и брокколи приготовленной заливкой и посыпьте оставшимся тертым сыром.\n\nШаг 12\n\nЗапекайте в духовке разогретой до 185-190 градусов 30-35 минут.\n\nШаг 13\n\nВкусный, нежный судак с брокколи, запечённый в духовке готов к подаче на стол.","notes":"","nutrition":"","favorite":false,"rating":"4.5","categories":"Белая рыба;Рыба","tags":"","video":"","source":"https://m.povar.ru/recipes/sudak_s_brokkoli_v_duhovke-87621.html","originalPicture":"","id":85},{"title":"Суп-пюре из болгарского перца","description":"","preparationTime":"20 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"4","ingredients":"Перец болгарский красный - 8 шт.\nЛук репчатый - 1 шт.\nКартофель - 1 шт\nЧеснок - 5-6 зубчиков\nВода или бульон куриный - 4 стакана\nОрегано сухой - 1 ч. л.\nСоль - по вкусу\nПерец чёрный молотый - по вкусу\nМасло растительное - для жарки\n\n","instructions":"Разогреть духовку до 250 градусов. Болгарский перец выложить на противень и запекать перец в духовке около 30 минут.\n\nДостать сладкий перец из духовки, дать остыть. Затем очистить перец от кожицы и семечек.\n\nКартофель нарезать кубиками и отварить. \n\nЛук нарезать кубиками и обжарить его до прозрачности.\n\nДобавить печеные перцы и жареный лук к картофелю и поварить вместе несколько минут.\n\nПри помощи блендера превратить всё в пюре.\n\nВ суп-пюре из сладкого перца добавить орегано, соль, черный перец. Довести до кипения и варить на слабом огне около 10 минут.\n\nСуп-пюре из болгарского перца готов. При подаче добавить в суп сметану, нарубленные листья базилика и немного свежемолотого чёрного перца. \nПриятного аппетита!\n","notes":"Получилось островато, не особо понравилось","nutrition":"","favorite":false,"rating":"3.0","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=147225","originalPicture":"","id":86},{"title":"Суп-пюре из брокколи","description":"","preparationTime":"15 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"45 минут","quantity":"4","ingredients":"Брокколи - 500 г\nМорковь - 1 шт.\nЛук репчатый - 1 шт.\nСыр плавленый сливочный - 100 г\nМасло растительное (или сливочное) - 1 ст. л.\nСливки - по вкусу\nСоль - по вкусу\nСухарики (для подачи) - по вкусу\n","instructions":"Лук и морковку порежьте кубиками, посолите и обжарьте на растительном (или сливочном) масле.\n\nВ кипящую подсоленную воду (или бульон) запустите брокколи и варите до полной готовности (около 7 минут).\n\nВ отдельной кастрюле довести 1 литр воды до кипения.\n\nДобавьте обжаренные овощи и брокколи в кастрюлю с кипящей водой.\n\nТуда же добавьте сливочный сыр. Посолить.\n\nКогда сырный суп с овощами немного остынет, измельчите все его составляющие с помощью блендера.\n\nСуп-пюре из брокколи готов!\n\nПодавать суп-пюре следует с сухариками. Готовый овощной суп-пюре из брокколи можно украсить сливками и любимой зеленью.","notes":"21.05. Получилось жидко, лучше добавить ровно 1 литр воды, или 2 сырка","nutrition":"","favorite":false,"rating":"4.0","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=139235","originalPicture":"","id":87},{"title":"Суп-пюре из кабачков и картофеля","description":"","preparationTime":"10 минут","cookingTime":"50 минут","inactiveTime":"","totalTime":"1 час","quantity":"4","ingredients":"Для овощного бульона:\nЛук репчатый - 100 г\nМорковь - 80 г\nКорень петрушки - 10 г\nЛавровый лист - 1 шт.\nПерец чёрный горошком - 4-6 шт.\nВода - 1 л\n*\nДля супа:\nКабачки\t- 900 г\nКартофель - 370 г\nЛук репчатый - 100 г\nЧеснок - 2-3 зубчика\nМасло растительное - 80 мл\nПетрушка свежая, для подачи - 30 г\nТравы прованские сушеные, для подачи (по желанию) - 1 ч. ложка\nСоль - по вкусу\nПерец черный молотый - по вкусу\n","instructions":"Для приготовления овощного бульона лук, морковь и корень петрушки очищаем. Лук разрезаем пополам. Морковь режем на несколько частей.\nВ кастрюлю с водой кладем лук, морковь, корень петрушки, перец горошком и лавровый лист.\n\nПосле того как вода закипит, солим по вкусу и варим на маленьком огне 20-30 минут. \nЗатем бульон процеживаем через сито, лук выбрасываем, морковку оставляем.\n\nКабачки (700 г) нарезаем полукольцами или четвертинками.\n\nВ сковороде разогреваем 50 мл растительного масла. \n\nПомешивая, обжариваем кабачки 5-7 минут.\n\nКартофель очищаем и нарезаем кубиками.\n\nНа сковороду с кабачками выкладываем картофель.\n\nОбжариваем кабачки с картофелем еще 3 минуты.\n\nОбжаренные овощи выкладываем в кастрюлю и заливаем овощным бульоном.\n\nСтавим на огонь и доводим бульон до кипения. \nВарим на среднем огне 10-15 минут, до мягкости овощей.\n\nПогружным блендером перебиваем кабачки и картофель в пюре, солим и перчим по вкусу.","notes":"","nutrition":"","favorite":false,"rating":"4.5","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=151934","originalPicture":"","id":88},{"title":"Суп-пюре из кабачков и цветной капусты","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"50 минут","quantity":"","ingredients":"Кабачки (молодые) - 500 г\nКапуста цветная - 500 г\nМорковь - 150 г\nЛук репчатый - 150 г\nМасло растительное - 1-2 ст. ложки\nПерец черный молотый - по вкусу\nСоль - по вкусу","instructions":"Репчатый лук очищаем и нарезаем кубиками.\n\nМорковь очищаем и натираем на крупной терке.\n\nВ кастрюле с толстым дном разогреваем растительное масло. Обжариваем лук 3 минуты.\n\nДобавляем морковь и жарим овощи еще 3-4 минуты.\n\nКабачки нарезаем кубиками (молодые кабачки можно не очищать).\n\nЦветную капусту разбираем на соцветия.\n\nВ кастрюлю с обжаренными овощами добавляем кабачки и капусту. Солим и перчим.\n\nПеремешиваем и заливаем горячей водой, только слегка покрывая овощи. \nДоводим до кипения и варим суп на небольшом огне 20 минут.\n\nГотовые овощи перетираем в пюре с помощью погружного блендера.\nСуп-пюре из кабачков и цветной капусты готов.","notes":"","nutrition":"","favorite":false,"rating":"","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=156315","originalPicture":"","id":89},{"title":"Суп-пюре из кабачков с зеленью","description":"","preparationTime":"15 минут","cookingTime":"45 минут","inactiveTime":"","totalTime":"1 час","quantity":"4","ingredients":"Кабачки 2 штуки\nКуриный бульон 1,5 л\nПетрушка сушеная по вкусу\nМорковь 1 штука\nСоль по вкусу\nМолотый черный перец по вкусу\nУкроп по вкусу","instructions":"1. Сварить куриный бульон, положив помимо курицы порезанную морковь, соль, перец и сухие укроп и петрушку.   \n2. Кабачки очистить и крупно порезать. Если кабачки большие, то нужно предварительно вырезать серединку. Положить порезанные кабачки в кипящий бульон и варить на маленьком огне минут 10 (так, чтобы и кабачки, и морковка стали совсем мягкими). \n3. Процедить бульон или достать овощи шумовкой. Взбить овощи в блендере до однородной массы. Разложить массу в тарелки, влить бульон и аккуратно перемешать.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Супы;Диета 5 стола","tags":"","video":"","source":"https://eda.ru/recepty/supy/sup-pjure-iz-kabachkov-s-zelenju-18403","originalPicture":"","id":90},{"title":"Суп-пюре из корня сельдерея и картофеля","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"500 г. сельдерея (корень)\n1 луковица\n1 морковь\n3 шт картофелины\n2 зубчика чеснока\n3 ст. овощного или куриного бульона\n200 мл. сливок (можно молоко)\n1 ст.л. сливочного масла (для обжарки)\nсоль, перец, зелень - по вкусу","instructions":"1. Лук и чеснок порубить и в кастрюле с толстым дном обжарить на сливочном масле до золотистого цвета.\n\n2. Корень сельдерея очистить, нарезать на кусочки и добавить в кастрюлю.\n\n3. Морковь очистить, нарезать кубиками и добавить к сельдерею.\n\n4. Картофель очистить, нарезать кубиками и тоже добавить в кастрюлю.\n\n5. Залить горячим бульоном или водой. Налить жидкости столько, чтобы она только прикрывала овощи. Дать закипеть, убавить огонь и варить до полной готовности овощей, примерно 30 минут.\n\n6. Готовые овощи пюрировать погружным блендером до однородной массы.\n\n7. Добавить в кастрюлю сливки, соль, перец. Дать закипеть. Густоту супа-пюре можно регулировать сливками, сливок","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Супы","tags":"","video":"","source":"https://yummybook.ru/recept/sup-pyure-iz-kornya-seldereya-i-kartofelya","originalPicture":"","id":91},{"title":"Сырный соус","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Сыр Фетакса - 200 г\nСливки - 100 мл\nЯичный желток - 1 шт","instructions":"Желток отделить от белка.\nСоединить в чаше блендера сыр, желток и сливки. Пробить до густой однородной массы.\n\nСоус подходит для овощей, курицы, рыбы, заливать блюдо и запекать.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"","tags":"","video":"","source":"","originalPicture":"","id":92},{"title":"Сырный суп-пюре из тыквы, помидоров и сладкого перца","description":"","preparationTime":"15  минут","cookingTime":" 35 минут","inactiveTime":"","totalTime":"50 минут","quantity":"4","ingredients":"Тыква - 400 г\nПомидоры (среднего размера) - 2 шт.\nПерец болгарский - 0,5 шт.\nЛук репчатый (по желанию) - 0,5 шт.\nСыр плавленый сливочный - 90 г\nЧеснок - 1 зубчик\nЗелень свежая (петрушка) - 0,5 пучка\nИмбирь молотый - 0,25 ч. ложки\nМускатный орех молотый - 0,25 ч. ложки\nПерец чёрный молотый - по вкусу\nСоль - по вкусу\nМасло растительное - 2 ст. ложки (для обжарки овощей)\nВода - 700-850 мл\n*\nДля подачи:\nСемечки тыквенные жареные - 100 г\nили сухарики - 50 г\nили сметана - 3 ст. ложки\nКунжут белый (по желанию) - 0,5 ч. ложки\nТравы сушёные (по желанию) - 0,5 ч. ложки","instructions":" Тыкву, болгарский перец и чеснок очистите. Помидоры надрежьте крест-накрест, полностью залейте кипятком и оставьте на 2-3 минуты.\nТыкву нарежьте кубиками. Сладкий перец нарежьте небольшими кусочками. Чеснок выдавите через пресс. Зелень промойте и мелко нарежьте.\n\nВ сковороде разогрейте растительное масло и обжарьте болгарский перец 3 минуты. Если вы используете лук, очистите его, мелко нарежьте и обжарьте вместе со сладким перцем.\nК обжаренному сладкому перцу добавьте тыкву.\n\nПомешивая, обжарьте примерно 5 минут.\n\nПомидоры обдайте холодной водой, очистите от кожицы и нарежьте кубиками.\n\nВскипятите воду.\nВ кастрюлю выложите обжаренные овощи, помидоры и чеснок. Добавьте соль и чёрный молотый перец.\n\nЗалейте овощи кипятком (количество зависит от того, какой консистенции суп-пюре вы хотите получить).\n\nВарите на среднем огне до готовности тыквы (20-30 минут).\n\nСыр натрите на крупной тёрке.\n\nКогда тыква будет готова, добавьте в кастрюлю зелень, сыр и молотые пряности (имбирь и мускатный орех).\n\nПомешивая, варите суп на небольшом огне ещё 5 минут, пока сыр полностью не расплавится.\n\nСнимите кастрюлю с огня и дайте супу немного остыть. Погружным блендером измельчите содержимое кастрюли в пюре.\n\nСырный суп из тыквы, помидоров и сладкого перца готов. Подавайте суп, украсив очищенными тыквенными семечками, сухариками или сметаной. Также при желании можно посыпать суп семенами кунжута и сушёными травами.\n\nПриятного аппетита!","notes":"","nutrition":"","favorite":true,"rating":"5.0","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=153859","originalPicture":"","id":93},{"title":"Творожная запеканка в мультиварке","description":"","preparationTime":"20 минут","cookingTime":"50 минут","inactiveTime":"30 минут","totalTime":"1 час 40 минут","quantity":"8","ingredients":"Творог – 400-500 г;\nМолоко – 100 мл;\nСметана – 100 мл;\nЯйцо куриное – 3 шт.;\nСахарный песок – 3 ст. л.;\nВанильный сахар – 1 пакетик;\nКрупа манная – 3 ст. л.;\nМасло сливочное – 20 г.","instructions":"Творог выложить в глубокую емкость, добавить к нему сметану и молоко.\n\nС помощью миксера перемешать до получения вот такой ровной гладкой массы.\n\nВ отдельной емкости соединить яйца, сахарный песок и ванильный сахар.\n\nЕсли вы любите сладкую выпечку, положите сахара на 1 ст. л. больше, так как с указанным в списке ингредиентов количеством запеканка будет лишь в меру сладкой, что может показаться недостаточным.\n\nВзбить яичную смесь, воспользовавшись миксером (масса должна увеличиться в объеме 2 раза). Именно хорошо взбитые яйца придадут в будущем запеканке пышность и воздушность.\n\nДалее вылить яичную смесь в творожную массу, всыпать манную крупу и аккуратно перемешать ложкой.\n\nВ итоге заготовка для запеканки должна получиться как жидкая сметана.\n\nПри желании в творожную массу добавьте изюм или другие сухофрукты, предварительно размоченные в горячей воде.\n\nДно чаши мультиварки смазать кусочком сливочного масла и вылить в нее творожную смесь.\n\n\nТворожная запеканка в мультиварке Редмонд выпекается на режиме «Выпечка/Запекание» в течение 50 минут. Клапан при выпечке должен находится в положении «Открыт» - это очень важно!\n\nПосле окончания программы не открывайте крышку сразу, дайте запеканке постепенно остыть в течение 30 минут, иначе она может опасть.\n\nИзвлекать запеканку из мультиварки удобно с помощью чаши для приготовления на пару, перевернув её затем на тарелку.\n\nВ классическом варианте творожную запеканку кушают просто с чашкой молока или чая. Сладкоежкам можно предложить со сладкой сметаной, сгущенкой, вареньем и даже тертым шоколадом.\n\nВ качестве эксперимента для придания особенного аромата вашей творожной запеканке, можете попробовать добавить в нее цедру лимона, или корицу, или мускатный орех – прислушайтесь к своим желаниям. Также в нее можно положить и свежие фрукты – бананы, яблоки, груши, или овощи – тыкву, морковь, или ягоды.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Десерты","tags":"","video":"","source":"https://vkys.info/1808-zapekanka-iz-tvoroga-v-multivarke-redmond.html","originalPicture":"","id":94},{"title":"Творожные шарики","description":"","preparationTime":"20 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"50 минут","quantity":"","ingredients":"800 г. творога (у меня 9%)\n3 яйца\n4 ст.л. сахара\n8-10 стол. ложек муки\nзаливка:\n500 гр. сметаны (у меня 15%)\n3 ст.л. сахара\n3 ст.л. мака\nванилин","instructions":"Творог растереть с яйцами. Затем добавить сахар и муку.\nВлажными руками сформировать шарики примерно с грецкий орех.\nБросить шарики в кипящую (слегка подсоленную воду) воду. Как всплывут, сразу достать шумовкой.\nФорму смазать маслом. Выложить в нее шарики.\nПриготовить заливку: слегка вилкой взбить сметану с сахаром и ванилином. Добавить мак\nПолучившимся соусом залить шарики.\n\nВыпекать в заранее разогретой до 180 градусов духовке 25-30 минут.","notes":"Творог должен быть обычный, не зерненый. Шарики делать маленькими","nutrition":"","favorite":false,"rating":"5.0","categories":"Десерты","tags":"","video":"","source":"https://www.koolinar.ru/recipe/view/82596","originalPicture":"","id":95},{"title":"Томатный суп с рисом","description":"","preparationTime":"20 минут","cookingTime":"40 минут","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"рис 60 г\nтомат-паста 2 ст. ложки\nперец болгарский 0.5 шт.\nлук репчатый 0.5 шт\nморковь 0.5 шт.\nкартофель 3-4 шт.\nпомидор 1 шт\nсмесь перцев 0.5 ч. ложки\nсоль по вкусу\nвода 1.5 л\nзелень по вкусу\nмасло растительное \nлавровый лист 1-2 шт.","instructions":"Вымыть рис до прозрачности воды. Залить водой и поставить на огонь. Сварить. Можно не солить.\n\nОчистить картофель, нарезать крупными кубиками, довести до кипения, уменьшить огонь и снять пену. Варить 10 минут.\n\nЛук обжарить на растительном масле до прозрачности.\n\nМорковь очистить, нарезать кубиками, добавить к луку. Тушить вместе 3 минуты.\n\nПерец очистить от семян и плодоножки, нарезать кубиками, обжарить вместе с луком и морковью пару минут.\n\nПомидор очистить от кожицы, нарезать кубиками, добавить к овощам, обжарить несколько минут.\n\nДобавить томатную пасту.\n\nВсыпать все специи.\n\nТушить зажарку еще минуты 2.\n\nДобавить в суп зажарку и сваренный рис, посолить по вкусу. Варить томатный суп с рисом еще 5-7 минут.","notes":"Риса не много, чтобы не превратилось в кашу","nutrition":"","favorite":false,"rating":"4.0","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=122580","originalPicture":"","id":96},{"title":"Тыквенный крем-суп","description":"","preparationTime":"30 минут","cookingTime":"30 минут","inactiveTime":"","totalTime":"1 час","quantity":"4","ingredients":"Тыква - 700 г\nКартофель - 2-3 шт.\nМорковь - 1-2 шт.\nЛук репчатый - 1 шт.\nЧеснок - 1-2 зубчика\nСливки (жирностью 20%) - 70 мл\nМасло оливковое - 3 ст. ложки\nСоль - по вкусу\nСемечки тыквенные (для подачи) - по вкусу\nВода - 700 мл","instructions":"1. Тыкву нарезаем кусочками средней величины. Лук мелко нарезаем. Нарезаем морковку кусочками и немного чеснока.\n2. В сковородку наливаем немного оливкового масла, разогреваем его.\n3. Выкладываем в сковороду лук, морковку и тыкву. Добавляем чеснок.\n4. Тушим тыкву с морковью, луком и чесноком на среднем огне минут 10.\n5. Картофель нарезаем средними кусочками и выкладываем в кастрюлю.\n6. Добавляем к картофеля тушеные овощи. Заливаем небольшим количеством воды и варим, пока картофель не станет мягким.\n7. Готовый овощной суп с тыквой пюрируем блендером до однородной массы. Добавляем немного соли.\n8. В тыквенный суп-пюре вливаем сливки и хорошо перемешиваем.\n9. Подаем тыквенный крем-суп, присыпав тыквенными семечками.","notes":"","nutrition":"","favorite":false,"rating":"4.5","categories":"Супы","tags":"","video":"","source":"https://www.russianfood.com/recipes/recipe.php?rid=148232","originalPicture":"","id":97},{"title":"Фаршированные перцы с крабовым мясом","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"","quantity":"","ingredients":"Крабовые палочки - 200 гр\nБолгарские перцы - 5-6 шт\nОтварной рис - 250 гр\nСливки 23-33% - 150 мл\nПротертые томаты - 300 г\nСыр пармезан - 2 ст ложки","instructions":"","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Рыба","tags":"","video":"","source":"","originalPicture":"","id":98},{"title":"Хек в сметанной заливке с овощами, запечённый в духовке","description":"","preparationTime":"","cookingTime":"","inactiveTime":"","totalTime":"1 час","quantity":"","ingredients":"Хек – 700-800 г\nСметана жирная – 150 г\nМорковь – 1 шт.\nБрокколи – 200 г\nЦветная капуста – 100 г\nСоль, смесь перцев по вкусу","instructions":"1. Взял пару тушек мороженного хека, разморозил его в холодильнике, почистил, порезал на порционные куски.\t\n2. Отварил соцветия брокколи.\n\n3. Отварил несколько соцветий цветной капусты.\n\n4. Отваренную предварительно морковь порезал овалами наискосок.\n\n6. Для заливки взял жирную сметану.\n\n7. Измельчил половину пучка укропа.\n\n8. В сметану добавил измельчённый укроп, посолил, поперчил и хорошенько размешал.\n\n9. Аккуратно выложил на дно формы для запекания заливку и разровнял её.\n\n10. В заливку выложил в произвольном порядке кусочки хека, соцветия брокколи, цветной капусты, заполнил пустоты пластинками отваренной моркови, посыпал смесью соли и перцев.\n\n11. Лоток накрыл фольгой и отправил в предварительно нагретую до 180 градусов духовку на 20 минут.\n\n12. Через 20 минут убрал фольгу и продолжил запекание хека с овощами ещё 20 минут до полной готовности блюда.\n\n13. При подаче добавил в тарелку пару долек лимона. Приятного аппетита!","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Главные блюда;Рыба;Диета 5 стола","tags":"","video":"","source":"https://yummybook.ru/recept/hek-v-smetanno-majoneznoj-zalivke-s-ovoschami-zapechennyj-v-duhovke","originalPicture":"","id":99},{"title":"Шарлотка (мамина)","description":"","preparationTime":"20 минут","cookingTime":"45 минут","inactiveTime":"","totalTime":"1 час 5 минут","quantity":"","ingredients":"1 стакан сахара\n1 стакан муки\n3 яйца\nЯблоко \nЩепотка корицы\nСливочное масло (смазать форму)\nМанка (посыпать форму) ","instructions":"Яйца взбить блендером\nПостепенно ввести в яйца сахар, продолжать взбивать\nМуку просеять, постепенно добавить к яйцам. Хорошо взбить\nЯблоко почистить, половину нарезать мелкими кубиками, половину дольками\nФорму для запекания смазать маслом и посыпать манкой, чтобы не пригорело\nВ форму вылить часть теста, положить яблоки (кубиками).\nВылить остальное тесто, аккуратно выложить дольки яблока. Посыпать корицей\nЗапекать 45 минут, пока тесто не перестанет быть влажным внутри.","notes":"","nutrition":"","favorite":false,"rating":"5.0","categories":"Десерты","tags":"","video":"","source":"","originalPicture":"","id":100}]
+;
+
+// ==================== APP STATE ====================
+let recipes = [...RECIPES_DATA];
+let currentPage = 'home';
+let previousPage = null;
+let activeFilter = 'all';
+let cookbookSearchQuery = '';
+let currentRecipeId = null;
+let chatHistory = [];
+const SHEET_URL_KEY = 'mybook_sheet_url';
+
+const CAT_ICONS = {
+  'Супы':'🍲','Курица':'🍗','Говядина':'🥩','Индейка':'🦃','Рыба':'🐟',
+  'Красная рыба':'🐠','Белая рыба':'🐡','Главные блюда':'🍽','Гарнир':'🥗',
+  'Десерты':'🍰','Выпечка':'🧁','Напитки':'🥤','Соусы':'🫙',
+  'Холодные закуски':'🥙','Правильное питание':'🥦','В мультиварке':'⚡',
+  'Диета 5 стола':'💊'
+};
+
+function getEmoji(recipe) {
+  const cats = (recipe.categories || '').split(';').map(s => s.trim()).filter(Boolean);
+  for (const cat of cats) {
+    if (CAT_ICONS[cat]) return CAT_ICONS[cat];
+  }
+  return '🍳';
+}
+
+function getAllCategories() {
+  const cats = {};
+  recipes.forEach(r => {
+    if (r.categories) {
+      r.categories.split(';').forEach(c => {
+        const cat = c.trim();
+        if (cat) cats[cat] = (cats[cat] || 0) + 1;
+      });
+    }
+  });
+  return Object.entries(cats).sort((a,b) => b[1]-a[1]);
+}
+
+function getRating(r) {
+  return r.rating ? parseFloat(r.rating) : 0;
+}
+
+function formatTime(t) {
+  return t || '';
+}
+
+// ==================== PAGE NAVIGATION ====================
+function showPage(name, id) {
+  const pages = ['home','cookbook','search','assistant','add','detail'];
+  pages.forEach(p => {
+    document.getElementById('page-'+p)?.classList.remove('active');
+    const btn = document.getElementById('nav-'+p);
+    if (btn) btn.classList.remove('active');
+  });
+  
+  previousPage = currentPage;
+  currentPage = name;
+  
+  if (id !== undefined) currentRecipeId = id;
+  
+  document.getElementById('page-'+name)?.classList.add('active');
+  const navBtn = document.getElementById('nav-'+name);
+  if (navBtn) navBtn.classList.add('active');
+  
+  // Update header
+  const titles = {
+    home: '🍳 Кулинарная книга',
+    cookbook: '📖 Все рецепты',
+    search: '🔍 Поиск',
+    assistant: '🤖 Помощник',
+    add: '➕ Добавить рецепт',
+    detail: currentRecipeId ? recipes.find(r=>r.id===currentRecipeId)?.title || 'Рецепт' : 'Рецепт'
+  };
+  document.getElementById('headerTitle').textContent = titles[name] || '';
+  document.getElementById('headerBack').classList.toggle('show', name === 'detail');
+  
+  if (name === 'detail') renderRecipeDetail(currentRecipeId);
+  if (name === 'home') renderHome();
+  if (name === 'cookbook') renderCookbook();
+  
+  window.scrollTo && window.scrollTo(0, 0);
+  document.getElementById('mainContent').scrollTop = 0;
+}
+
+function goBack() {
+  showPage(previousPage || 'cookbook');
+}
+
+// ==================== HOME ====================
+function renderHome() {
+  const cats = getAllCategories();
+  document.getElementById('homeStats').innerHTML = `
+    <div class="stat"><span class="stat-num">${recipes.length}</span><span class="stat-label">рецептов</span></div>
+    <div class="stat"><span class="stat-num">${cats.length}</span><span class="stat-label">категорий</span></div>
+    <div class="stat"><span class="stat-num">${recipes.filter(r=>r.favorite).length}</span><span class="stat-label">избранных</span></div>
+  `;
+  
+  const quickCats = document.getElementById('quickCats');
+  quickCats.innerHTML = cats.map(([cat, count]) => `
+    <div class="cat-card" onclick="filterByCat('${cat.replace(/'/g,"\\'")}')">
+      <div class="cat-icon">${CAT_ICONS[cat]||'📁'}</div>
+      <div class="cat-name">${cat}</div>
+      <div class="cat-count">${count} рец.</div>
+    </div>
+  `).join('');
+  
+  const favs = recipes.filter(r => r.favorite || getRating(r) >= 5);
+  document.getElementById('favCards').innerHTML = favs.slice(0,5).map(r => `
+    <div class="mini-recipe-card" onclick="openRecipe(${r.id})">
+      <div class="mini-recipe-emoji">${getEmoji(r)}</div>
+      <div class="mini-recipe-info">
+        <div class="mini-recipe-title">${r.title}</div>
+        <div class="mini-recipe-meta">${r.totalTime ? '⏱ '+r.totalTime : ''} ${r.rating ? '⭐'+r.rating : ''}</div>
+      </div>
+    </div>
+  `).join('') || '<p style="color:var(--text2);font-size:.85rem;padding:8px 0">Нет избранных рецептов</p>';
+  
+  const quick = recipes.filter(r => {
+    const t = r.totalTime || r.cookingTime || '';
+    return t.match(/\b[12]?\d\s*мин/) && !t.match(/час|ч\b/i);
+  });
+  document.getElementById('quickRecipes').innerHTML = quick.slice(0,5).map(r => `
+    <div class="mini-recipe-card" onclick="openRecipe(${r.id})">
+      <div class="mini-recipe-emoji">${getEmoji(r)}</div>
+      <div class="mini-recipe-info">
+        <div class="mini-recipe-title">${r.title}</div>
+        <div class="mini-recipe-meta">⏱ ${r.totalTime || r.cookingTime}</div>
+      </div>
+    </div>
+  `).join('') || '<p style="color:var(--text2);font-size:.85rem;padding:8px 0">Нет быстрых рецептов</p>';
+}
+
+function filterByCat(cat) {
+  activeFilter = cat;
+  showPage('cookbook');
+}
+
+// ==================== COOKBOOK ====================
+function renderCookbook() {
+  const filterBar = document.getElementById('filterBar');
+  const cats = getAllCategories();
+  filterBar.innerHTML = `
+    <button class="filter-chip ${activeFilter==='all'?'active':''}" onclick="setFilter('all')">Все</button>
+    ${cats.map(([c]) => `<button class="filter-chip ${activeFilter===c?'active':''}" onclick="setFilter('${c.replace(/'/g,"\\'")}')">${CAT_ICONS[c]||''} ${c}</button>`).join('')}
+  `;
+  renderRecipes();
+}
+
+function setFilter(cat) {
+  activeFilter = cat;
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderRecipes();
+}
+
+function filterRecipes() {
+  const q = document.getElementById('cookbookSearch').value;
+  cookbookSearchQuery = q;
+  document.getElementById('clearSearch').style.display = q ? 'block' : 'none';
+  renderRecipes();
+}
+
+function clearCookbookSearch() {
+  document.getElementById('cookbookSearch').value = '';
+  cookbookSearchQuery = '';
+  document.getElementById('clearSearch').style.display = 'none';
+  renderRecipes();
+}
+
+function renderRecipes() {
+  const q = cookbookSearchQuery.toLowerCase().trim();
+  let filtered = recipes;
+  
+  if (activeFilter !== 'all') {
+    filtered = filtered.filter(r => (r.categories||'').includes(activeFilter));
+  }
+  if (q) {
+    filtered = filtered.filter(r =>
+      r.title.toLowerCase().includes(q) ||
+      (r.ingredients||'').toLowerCase().includes(q) ||
+      (r.categories||'').toLowerCase().includes(q)
+    );
+  }
+  
+  const grid = document.getElementById('recipesGrid');
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="no-results"><span class="emoji">🔍</span>Ничего не найдено</div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(r => {
+    const cats = (r.categories||'').split(';').map(s=>s.trim()).filter(Boolean);
+    return `
+      <div class="recipe-card" onclick="openRecipe(${r.id})">
+        ${r.favorite ? '<div class="recipe-card-fav">❤️</div>' : r.rating ? `<div class="recipe-card-rating">⭐${r.rating}</div>` : ''}
+        <span class="recipe-card-emoji">${getEmoji(r)}</span>
+        <div class="recipe-card-title">${r.title}</div>
+        ${r.totalTime ? `<div class="recipe-card-time">⏱ ${r.totalTime}</div>` : ''}
+        <div class="recipe-card-cats">${cats.slice(0,2).map(c=>`<span class="recipe-cat-tag">${c}</span>`).join('')}</div>
+      </div>`;
+  }).join('');
+}
+
+// ==================== RECIPE DETAIL ====================
+function openRecipe(id) {
+  showPage('detail', id);
+}
+
+function renderRecipeDetail(id) {
+  const r = recipes.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('headerTitle').textContent = r.title;
+  
+  const cats = (r.categories||'').split(';').map(s=>s.trim()).filter(Boolean);
+  const meta = [];
+  if (r.totalTime) meta.push(`⏱ ${r.totalTime}`);
+  if (r.preparationTime) meta.push(`🥄 подг. ${r.preparationTime}`);
+  if (r.cookingTime) meta.push(`🔥 готовка ${r.cookingTime}`);
+  if (r.quantity) meta.push(`🍽 ${r.quantity} порции`);
+  if (r.rating) meta.push(`⭐ ${r.rating}`);
+  
+  const ingredients = (r.ingredients||'').split('\n').filter(s=>s.trim());
+  const steps = parseSteps(r.instructions||'');
+  
+  document.getElementById('recipeDetailContent').innerHTML = `
+    <div class="recipe-detail-header">
+      <span class="recipe-detail-emoji">${getEmoji(r)}</span>
+      <div class="recipe-detail-title">${r.title}</div>
+      ${r.description ? `<p style="opacity:.85;font-size:.88rem;margin-top:8px;line-height:1.5">${r.description}</p>` : ''}
+      <div class="recipe-detail-meta">${meta.map(m=>`<span class="detail-meta-item">${m}</span>`).join('')}</div>
+    </div>
+    <div class="recipe-detail-body">
+      ${cats.length ? `<div class="detail-section">
+        <div class="detail-section-title">📂 Категории</div>
+        <div class="detail-section-body"><div class="detail-cats">${cats.map(c=>`<span class="detail-cat-tag" onclick="filterByCat('${c.replace(/'/g,"\\'")}');showPage('cookbook')">${CAT_ICONS[c]||''} ${c}</span>`).join('')}</div></div>
+      </div>` : ''}
+      
+      ${ingredients.length ? `<div class="detail-section">
+        <div class="detail-section-title">🥕 Ингредиенты</div>
+        <div class="detail-section-body">${ingredients.map(ing=>`<div class="ingredient-item">${ing.trim()}</div>`).join('')}</div>
+      </div>` : ''}
+      
+      ${steps.length ? `<div class="detail-section">
+        <div class="detail-section-title">📋 Приготовление</div>
+        <div class="detail-section-body">${steps.map((step,i)=>`<div class="step-item"><div class="step-num">${i+1}</div><div>${step}</div></div>`).join('')}</div>
+      </div>` : ''}
+      
+      ${r.notes ? `<div class="detail-section">
+        <div class="detail-section-title">💬 Заметки</div>
+        <div class="detail-section-body"><div class="notes-text">${r.notes}</div></div>
+      </div>` : ''}
+      
+      ${r.source ? `<div class="detail-section">
+        <div class="detail-section-title">🔗 Источник</div>
+        <div class="detail-section-body"><a class="source-link" href="${r.source}" target="_blank">${r.source}</a></div>
+      </div>` : ''}
+    </div>`;
+}
+
+function parseSteps(text) {
+  if (!text) return [];
+  const lines = text.split('\n').filter(l => l.trim());
+  const steps = [];
+  let current = '';
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    // detect numbered steps
+    if (/^(\d+[.)]\s*|Шаг\s*\d+[.):]?\s*)/i.test(trimmed)) {
+      if (current) steps.push(current);
+      current = trimmed.replace(/^(\d+[.)]\s*|Шаг\s*\d+[.):]?\s*)/i, '').trim();
+    } else if (current) {
+      current += ' ' + trimmed;
+    } else {
+      current = trimmed;
+    }
+  }
+  if (current) steps.push(current);
+  return steps.length > 1 ? steps : text.split('\n').filter(l=>l.trim()).map(l=>l.trim());
+}
+
+// ==================== SEARCH ====================
+function doSearch() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const info = document.getElementById('searchInfo');
+  const results = document.getElementById('searchResults');
+  
+  if (!q) { info.textContent = ''; results.innerHTML = ''; return; }
+  
+  const found = recipes.filter(r =>
+    r.title.toLowerCase().includes(q) ||
+    (r.ingredients||'').toLowerCase().includes(q) ||
+    (r.instructions||'').toLowerCase().includes(q) ||
+    (r.categories||'').toLowerCase().includes(q)
+  );
+  
+  info.textContent = `Найдено: ${found.length} рецептов`;
+  
+  if (!found.length) {
+    results.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text2)"><span style="font-size:2.5rem;display:block;margin-bottom:10px">😔</span>Ничего не найдено</div>`;
+    return;
+  }
+  
+  results.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px">${found.map(r => `
+    <div class="mini-recipe-card" onclick="openRecipe(${r.id})">
+      <div class="mini-recipe-emoji">${getEmoji(r)}</div>
+      <div class="mini-recipe-info">
+        <div class="mini-recipe-title">${highlight(r.title, q)}</div>
+        <div class="mini-recipe-meta">${r.totalTime?'⏱ '+r.totalTime+' ':''} ${r.categories||''}</div>
+      </div>
+    </div>
+  `).join('')}</div>`;
+}
+
+function highlight(text, q) {
+  return text.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')', 'gi'), '<mark style="background:#ffe08a;padding:0 2px;border-radius:3px">$1</mark>');
+}
+
+// ==================== ASSISTANT ====================
+const ASSISTANT_SYSTEM = `Ты — умный кулинарный помощник. У тебя есть доступ к базе рецептов пользователя.
+Помогай выбирать рецепты по:
+1. Имеющимся продуктам (ищи рецепты с этими ингредиентами в ингредиентах)
+2. Типу блюда (суп, гарнир, основное и т.д.)
+3. Категории
+4. Времени готовки
+
+Когда рекомендуешь рецепт — укажи его название в виде [RECIPE:id:Название], чтобы на него можно было нажать.
+Например: [RECIPE:5:Брокколи с курицей]
+
+Если спрашивают что докупить — посчитай разницу между нужными ингредиентами и имеющимися.
+Отвечай по-русски, кратко и дружелюбно.`;
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('chatSend').disabled = true;
+  
+  appendMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  
+  const typingEl = appendTyping();
+  
+  // Build context from recipes
+  const recipeContext = recipes.slice(0, 50).map(r => 
+    `ID:${r.id} "${r.title}" [${r.categories}] Ингредиенты: ${(r.ingredients||'').replace(/\n/g,' ')} Время: ${r.totalTime||r.cookingTime||'?'}`
+  ).join('\n');
+  
+  const messages = [
+    { role: 'user', content: `База рецептов (первые 50):\n${recipeContext}\n\n---\nВопрос пользователя: ${text}` }
+  ];
+  if (chatHistory.length > 2) {
+    messages.unshift(...chatHistory.slice(-4, -1).map(m => ({ role: m.role, content: m.content })));
+  }
+  
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: ASSISTANT_SYSTEM,
+        messages
+      })
+    });
+    const data = await resp.json();
+    const reply = data.content?.[0]?.text || 'Извините, не смог ответить. Попробуйте еще раз.';
+    chatHistory.push({ role: 'assistant', content: reply });
+    typingEl.remove();
+    appendMsg('assistant', formatAssistantMsg(reply));
+  } catch(e) {
+    typingEl.remove();
+    appendMsg('assistant', '😔 Не удалось подключиться к AI. Проверьте интернет.\n\nТем не менее, я могу помочь найти рецепты локально. Попробуйте поиск 🔍');
+  }
+  
+  document.getElementById('chatSend').disabled = false;
+}
+
+function formatAssistantMsg(text) {
+  return text.replace(/\[RECIPE:(\d+):([^\]]+)\]/g, (_, id, name) =>
+    `<a onclick="openRecipe(${id})" style="cursor:pointer">${name}</a>`
+  ).replace(/\n/g, '<br>');
+}
+
+function appendMsg(role, html) {
+  const chat = document.getElementById('chatArea');
+  const el = document.createElement('div');
+  el.className = `msg ${role}`;
+  el.innerHTML = html;
+  chat.appendChild(el);
+  chat.scrollTop = chat.scrollHeight;
+  return el;
+}
+
+function appendTyping() {
+  const chat = document.getElementById('chatArea');
+  const el = document.createElement('div');
+  el.className = 'msg assistant typing';
+  el.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  chat.appendChild(el);
+  chat.scrollTop = chat.scrollHeight;
+  return el;
+}
+
+function addSuggestions(items) {
+  const chat = document.getElementById('chatArea');
+  const el = document.createElement('div');
+  el.className = 'msg-suggestions';
+  el.innerHTML = items.map(s => `<button class="suggestion-btn" onclick="sendSuggestion('${s}')">${s}</button>`).join('');
+  chat.appendChild(el);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function sendSuggestion(text) {
+  document.getElementById('chatInput').value = text;
+  sendMessage();
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+}
+
+function initChat() {
+  appendMsg('assistant', '👋 Привет! Я ваш кулинарный помощник.<br><br>Я могу:<br>• Подобрать рецепт по продуктам<br>• Найти что приготовить на обед/ужин<br>• Подсказать что докупить<br>• Ответить на вопросы о рецептах');
+  addSuggestions([
+    '🥕 Что приготовить из курицы?',
+    '🍲 Хочу суп',
+    '⚡ Быстрый ужин за 30 мин',
+    '🥦 Правильное питание'
+  ]);
+}
+
+// ==================== ADD RECIPE ====================
+function initAddForm() {
+  const cats = getAllCategories().map(([c]) => c);
+  document.getElementById('newCatsCheckboxes').innerHTML = cats.map((c, i) => `
+    <input type="checkbox" class="cat-checkbox" id="cat_${i}" value="${c}">
+    <label class="cat-checkbox-label" for="cat_${i}">${CAT_ICONS[c]||''} ${c}</label>
+  `).join('');
+  
+  const saved = localStorage.getItem(SHEET_URL_KEY);
+  if (saved) document.getElementById('sheetUrl').value = saved;
+}
+
+function saveSheetUrl() {
+  const url = document.getElementById('sheetUrl').value.trim();
+  if (url) { localStorage.setItem(SHEET_URL_KEY, url); showToast('✅ URL сохранён'); }
+}
+
+function addRecipe() {
+  const title = document.getElementById('newTitle').value.trim();
+  const ingredients = document.getElementById('newIngredients').value.trim();
+  const instructions = document.getElementById('newInstructions').value.trim();
+  
+  if (!title) { showToast('⚠️ Введите название рецепта'); return; }
+  if (!ingredients) { showToast('⚠️ Добавьте ингредиенты'); return; }
+  
+  const cats = [...document.querySelectorAll('.cat-checkbox:checked')].map(e => e.value).join(';');
+  
+  const newId = Math.max(...recipes.map(r => r.id), 0) + 1;
+  const recipe = {
+    id: newId,
+    title,
+    description: document.getElementById('newDescription').value.trim(),
+    preparationTime: document.getElementById('newPrepTime').value.trim(),
+    cookingTime: document.getElementById('newCookTime').value.trim(),
+    totalTime: document.getElementById('newTotalTime').value.trim(),
+    quantity: document.getElementById('newQuantity').value.trim(),
+    ingredients,
+    instructions,
+    notes: document.getElementById('newNotes').value.trim(),
+    rating: document.getElementById('newRating').value,
+    categories: cats,
+    source: document.getElementById('newSource').value.trim(),
+    favorite: false,
+    nutrition: '', tags: '', video: '', inactiveTime: '', originalPicture: ''
+  };
+  
+  recipes.push(recipe);
+  
+  // Reset form
+  ['newTitle','newDescription','newPrepTime','newCookTime','newTotalTime','newQuantity',
+   'newIngredients','newInstructions','newNotes','newSource'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('newRating').value = '';
+  document.querySelectorAll('.cat-checkbox:checked').forEach(c => c.checked = false);
+  
+  showToast('🎉 Рецепт добавлен!');
+  
+  // Try to save to Google Sheets via Apps Script if URL configured
+  const sheetUrl = localStorage.getItem(SHEET_URL_KEY);
+  if (sheetUrl) saveToSheet(recipe, sheetUrl);
+  
+  setTimeout(() => openRecipe(newId), 1000);
+}
+
+async function saveToSheet(recipe, url) {
+  try {
+    const execUrl = url.replace('/edit', '/exec').replace(/\?.*$/, '');
+    await fetch(execUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify(recipe)
+    });
+  } catch(e) { /* silent fail */ }
+}
+
+// ==================== TOAST ====================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ==================== GOOGLE SHEETS LOADER ====================
+const SHEET_ID = '1_nZ5HVppORdwNk4LlT8_gIlra58-0zKZiUUePdf2C3U';
+
+async function loadFromGoogleSheets() {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Не удалось загрузить таблицу');
+  const csv = await response.text();
+  return parseCSV(csv);
+}
+
+function parseCSV(csv) {
+  const lines = csv.split('\n');
+  if (lines.length < 2) return [];
+  
+  // Parse header row - remove quotes
+  const headers = lines[0].split(',').map(h => h.replace(/^"|"$/g, '').trim());
+  
+  const recipes = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+    
+    const values = parseCSVLine(line);
+    if (values.length < 2) continue;
+    
+    const recipe = {};
+    headers.forEach((h, idx) => {
+      recipe[h] = (values[idx] || '').replace(/\\n/g, '\n').trim();
+    });
+    
+    // Normalize fields
+    recipe.id = recipe.id ? parseInt(recipe.id) : (i);
+    recipe.favorite = recipe.favorite === 'true' || recipe.favorite === 'TRUE' || recipe.favorite === '1';
+    
+    if (recipe.title) recipes.push(recipe);
+  }
+  return recipes;
+}
+
+function parseCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuotes && line[i+1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (ch === ',' && !inQuotes) {
+      result.push(current);
+      current = '';
+    } else {
+      current += ch;
+    }
+  }
+  result.push(current);
+  return result;
+}
+
+// ==================== REFRESH FROM SHEETS ====================
+async function refreshFromSheets() {
+  const btn = document.getElementById('refreshBtn');
+  const status = document.getElementById('syncStatus');
+  btn.disabled = true;
+  btn.textContent = '⏳ Загрузка...';
+  status.textContent = 'Загружаю данные из таблицы...';
+  status.style.color = 'var(--text2)';
+  
+  try {
+    const sheetRecipes = await Promise.race([
+      loadFromGoogleSheets(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 10000))
+    ]);
+    
+    if (sheetRecipes && sheetRecipes.length > 0) {
+      window.RECIPES_DATA = sheetRecipes;
+      recipes = [...sheetRecipes];
+      renderHome();
+      renderCookbook();
+      status.textContent = `✓ Загружено ${sheetRecipes.length} рецептов — ${new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'})}`;
+      status.style.color = 'var(--accent2)';
+      showToast(`✅ Загружено ${sheetRecipes.length} рецептов из таблицы`);
+    }
+  } catch (e) {
+    status.textContent = '⚠️ Не удалось загрузить. Проверьте доступ к таблице.';
+    status.style.color = '#e74c3c';
+    showToast('Ошибка загрузки из таблицы');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔄 Обновить рецепты';
+  }
+}
+
+
+window.addEventListener('DOMContentLoaded', async () => {
+  const overlay = document.getElementById('loadingOverlay');
+  const loadingText = overlay.querySelector('p');
+  
+  try {
+    loadingText.textContent = 'Загрузка рецептов из таблицы...';
+    
+    let loaded = false;
+    // Try loading from Google Sheets
+    try {
+      const sheetRecipes = await Promise.race([
+        loadFromGoogleSheets(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000))
+      ]);
+      
+      if (sheetRecipes && sheetRecipes.length > 0) {
+        window.RECIPES_DATA = sheetRecipes;
+        recipes = [...sheetRecipes];
+        loaded = true;
+        loadingText.textContent = `Загружено ${sheetRecipes.length} рецептов ✓`;
+      }
+    } catch (e) {
+      console.warn('Google Sheets недоступен, используем встроенные данные:', e.message);
+      loadingText.textContent = 'Использую локальные данные...';
+    }
+    
+    if (!loaded) {
+      // Fallback to embedded data
+      recipes = [...RECIPES_DATA];
+    }
+    
+    await new Promise(r => setTimeout(r, 500));
+    
+    overlay.style.transition = 'opacity .5s';
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      renderHome();
+      renderCookbook();
+      initChat();
+      initAddForm();
+    }, 500);
+    
+  } catch (e) {
+    console.error('Init error:', e);
+    recipes = [...RECIPES_DATA];
+    overlay.style.opacity = '0';
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      document.getElementById('app').style.display = 'flex';
+      renderHome();
+      renderCookbook();
+      initChat();
+      initAddForm();
+    }, 300);
+  }
+});
+</script>
+</body>
+</html>
