@@ -1137,7 +1137,7 @@ function highlight(text, q) {
 }
 
 // ==================== ASSISTANT ====================
-const ANTHROPIC_API_KEY = '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';
+const WORKER_URL = 'https://cookbook-proxy.nataliya-krivosheya-diskurs.workers.dev';
 let chatHistory = [];
 
 const ASSISTANT_SYSTEM = `Ты кулинарный помощник. У пользователя есть личная кулинарная книга с рецептами. 
@@ -1160,9 +1160,9 @@ async function sendMessage() {
   const messages = [{ role: 'user', content: `База рецептов:\n${recipeContext}\n\n---\nВопрос: ${text}` }];
   if (chatHistory.length > 2) messages.unshift(...chatHistory.slice(-4,-1));
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch(WORKER_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 800, system: ASSISTANT_SYSTEM, messages })
     });
     const data = await resp.json();
